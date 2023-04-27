@@ -1,0 +1,8 @@
+fastapi>=0.68.0,<0.69.0
+pydantic>=1.8.0,<2.0.0
+uvicorn>=0.15.0,<0.16.0
+debugpy==1.6.7
+pytest==7.3.1
+mypy==1.2.0
+black==23.3.0
+ruff==0.0.261
