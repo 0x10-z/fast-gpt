@@ -1,8 +1,9 @@
 services:
-  fast-gpt:
+  web:
     build: .
     ports:
       - "5000:80"
       - "5678:5678"
     volumes:
       - ./app:/app
+    command: "python -m debugpy --listen 0.0.0.0:5678 --wait-for-client /app/main.py --reload"
