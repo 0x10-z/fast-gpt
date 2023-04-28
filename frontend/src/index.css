@@ -26,7 +26,6 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-
 .chat-message {
   display: flex;
   margin: 10px 0;
@@ -39,14 +38,44 @@ body {
   width: 100%;
 }
 
-.chat-message.bot {
-
+.chat-message.assistant {
 }
 
 .chat-message.user .message {
   color: black;
 }
 
-.chat-message.bot .message {
-  
+.chat-message.assistant .message {
+}
+
+textarea:focus-visible {
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+
+  border-radius: 10px;
+}
+
+/* ocultar el icono de redimensionamiento */
+textarea {
+  resize: none;
+  -moz-resize: none;
+  -webkit-resize: none;
 }

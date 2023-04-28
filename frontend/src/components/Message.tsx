@@ -1,10 +1,8 @@
 interface Message {
-  id: number
-  content: string
-  sender: 'user' | 'bot'
-  timestamp: Date
+  id: string;
+  content: string;
+  sender: "user" | "assistant";
+  timestamp: Date;
 }
-
-
 
 export default Message;
