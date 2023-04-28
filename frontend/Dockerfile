@@ -10,8 +10,8 @@ RUN npm install -D postcss-cli
 COPY . /app
 
 
-RUN npm run build
-RUN npm run build:css
+#RUN npm run build
+#RUN npm run build:css
 
 EXPOSE 3000
 

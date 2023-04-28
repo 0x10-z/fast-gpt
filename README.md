@@ -7,5 +7,6 @@
 # Quick guide
 
 ```bash
+echo -n "OPEN_API_KEY=<apikey>" > backend/.env
 docker-compose up
 ```
