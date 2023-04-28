@@ -4,9 +4,11 @@ import MessagesList from "./MessagesList";
 import Footer from "./Footer";
 import Message from "./Message";
 import { toast } from "react-toastify";
+import { ApiManager } from "../utils/ApiManager";
 import "react-toastify/dist/ReactToastify.css";
-import { API_URL } from "../Globals";
 import Loader from "./Loader";
+
+const apiManager = new ApiManager();
 
 function ChatWindow() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -46,11 +48,7 @@ function ChatWindow() {
   const sendMessage = async (message: string) => {
     try {
       setLoading(true);
-      const response = await fetch(API_URL + "?message=" + message, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        // body: JSON.stringify({ message }),
-      });
+      const response = await apiManager.chatGpt(message);
       setLoading(false);
       await handleResponse(response, message);
     } catch (error: any) {

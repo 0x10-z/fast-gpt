@@ -12,7 +12,7 @@ function Sidebar() {
     <div className="flex h-screen bg-gray-100">
       {/* Botón para abrir/cerrar el sidebar */}
       <button
-        className="fixed z-20 inset-0 bg-black opacity-25 transition-opacity lg:hidden"
+        className="fixed z-20 inset-0 bg-black opacity-25 transition-opacity"
         onClick={toggleSidebar}
         aria-hidden="true"></button>
 
@@ -34,7 +34,7 @@ function Sidebar() {
       <div className="flex-1 overflow-auto p-10">
         {/* Botón para abrir el sidebar (visible en dispositivos móviles) */}
         <button
-          className="fixed z-20 top-4 right-4 p-2 rounded-full bg-gray-800 text-white lg:hidden"
+          className="fixed z-20 top-4 right-4 p-2 rounded-full bg-gray-800 text-white"
           onClick={toggleSidebar}>
           {isOpen ? (
             <HiX className="h-6 w-6" />
