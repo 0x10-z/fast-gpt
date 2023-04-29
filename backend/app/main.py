@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 from openai_utils import OpenAI
 
@@ -20,11 +21,14 @@ app.add_middleware(
 
 open_ai = OpenAI()
 
-@app.get("/")
-def index(message: str = Query(None, min_length=1, max_length=250)):
+class ResponseMessage(BaseModel):
+    message: str
+
+@app.post("/")
+def index(response_message: ResponseMessage):
     response = {"success": False}
-    if message:
-        response = process_message(message, response)
+    if response_message:
+        response = process_message(response_message.message, response)
     else:
         response["error"] = "Please, add message parameter ?message=<your message>"
     return response

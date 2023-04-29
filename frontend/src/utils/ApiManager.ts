@@ -1,19 +1,19 @@
 import { API_URL } from "../Globals";
-import Message from "../components/Message";
+import { Message, Sender } from "../components/Message";
 
 export class ApiManager{
   
   async chatGpt(message: string): Promise<Message> {
-    const response = await fetch(API_URL + "?message=" + message, {
-      method: "GET",
+    const response = await fetch(API_URL, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      // body: JSON.stringify({ message }),
+      body: JSON.stringify({ message: message }),
     });
 
     if (response.ok) {
       const data = await response.json();
       if (data.success) {
-        return createMessage(data.last_response, "assistant");
+        return Message.createMessage(data.last_response, Sender.Assistant);
       } else {
         throw new Error(data.error);
       }
@@ -24,13 +24,4 @@ export class ApiManager{
     }
   }
 
-}
-
-function createMessage(content: string, sender: "user" | "assistant"): Message {
-  return {
-    id: "",
-    content,
-    sender,
-    timestamp: new Date(),
-  };
 }
