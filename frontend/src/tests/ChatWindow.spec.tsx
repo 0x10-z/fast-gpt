@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import ChatWindow from "pages/ChatWindow";
 
 describe("ChatWindow", () => {
-  it("renders the chat window and sends a message", async () => {
+  test("renders the chat window and sends a message", async () => {
     // Render the ChatWindow component
     render(<ChatWindow />);
     
