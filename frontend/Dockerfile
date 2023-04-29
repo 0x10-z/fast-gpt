@@ -9,7 +9,7 @@ RUN npm install -D postcss-cli
 
 COPY . /app
 
-
+#RUN npm test
 #RUN npm run build
 #RUN npm run build:css
 

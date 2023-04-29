@@ -1,5 +1,5 @@
 import { Transition } from "@headlessui/react";
-import LoginForm from "./Login";
+import LoginForm from "components/Login";
 
 interface SidebarProps {
   isOpen: boolean;

@@ -1,10 +1,10 @@
-import "./styles/App.css";
+import "styles/App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
-import ChatWindow from "./components/ChatWindow";
+import ChatWindow from "./pages/ChatWindow";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./pages/Sidebar";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);

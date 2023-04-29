@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-import ChatInput from "./ChatInput";
-import MessagesList from "./MessagesList";
-import Footer from "./Footer";
-import { Message, Sender } from "./Message";
 import { toast } from "react-toastify";
-import { ApiManager } from "../utils/ApiManager";
 import "react-toastify/dist/ReactToastify.css";
+import ChatInput from "components/ChatInput";
+import MessagesList from "components/MessagesList";
+import Footer from "components/Footer";
+import { Message, Sender } from "components/Message";
+import { ApiService } from "services/ApiService";
 
-const apiManager = new ApiManager();
+const apiService = new ApiService();
 
 /* eslint-disable no-multi-str */
 const defaultMessages = [
@@ -59,7 +59,7 @@ function ChatWindow() {
       setMessages((prevState) => [...prevState, userMessage]);
       const temporalAssistantMessage = Message.createMessage("#...", Sender.Assistant);
       setMessages((prevState) => [...prevState, temporalAssistantMessage]);
-      const assistantMessage = await apiManager.chatGpt(message);
+      const assistantMessage = await apiService.chatGpt(message);
       addMessageToState(assistantMessage);
       setLoading(false);
     } catch (error: any) {
@@ -77,11 +77,6 @@ function ChatWindow() {
         <ChatInput onSendMessage={sendMessage} inputRef={inputRef} />
       </div>
       <Footer />
-      {loading && (
-        <div className="">
-          {/*<Loader />*/}
-        </div>
-      )}
     </div>
   );
 }

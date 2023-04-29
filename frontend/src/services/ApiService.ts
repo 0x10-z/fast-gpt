@@ -1,7 +1,7 @@
-import { API_URL } from "../Globals";
-import { Message, Sender } from "../components/Message";
+import { API_URL } from "Globals";
+import { Message, Sender } from "components/Message";
 
-export class ApiManager{
+export class ApiService{
   
   async chatGpt(message: string): Promise<Message> {
     const response = await fetch(API_URL, {
@@ -9,7 +9,6 @@ export class ApiManager{
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: message }),
     });
-
     if (response.ok) {
       const data = await response.json();
       if (data.success) {

@@ -1,6 +1,7 @@
 import os
 import openai
 from models import MessageList, Message, Role
+import time
 
 message_list = MessageList()
 
@@ -16,7 +17,11 @@ class OpenAI:
       message_list.messages.append(Message(role=Role.USER, content=content))
       
       try:
+        print("Request sent to OpenAI...")
+        start = time.time()
         openai_response = self.retry_completion(2)
+        end = time.time()
+        print("Response received after {} seconds.".format(end - start))
         if openai_response:
           message_list.messages.append(Message(**openai_response.choices[0].message))
         else:

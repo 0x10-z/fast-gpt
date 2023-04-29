@@ -8,7 +8,7 @@ import Loader from "./Loader";
 
 /* eslint react/no-danger: 0 */
 
-type MessagesListProps = {
+interface MessagesListProps {
   loading: boolean;
   messages: Message[];
   lastMessageRef: React.RefObject<HTMLDivElement>;
@@ -20,7 +20,7 @@ function MessagesList({ loading, messages, lastMessageRef }: MessagesListProps) 
   });
  
   return (
-    <div className="flex flex-col overflow-y-auto space-y-4 w-full">
+    <div className="flex flex-col overflow-y-auto space-y-4 w-full" id="scroll-container">
       {messages.map((message, index) => (
         <div
           key={index}

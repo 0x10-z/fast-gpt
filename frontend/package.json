@@ -16,7 +16,6 @@
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
     "highlight.js": "^11.7.0",
-    "highlightjs": "^9.16.2",
     "next": "13.3.1",
     "openai": "^3.2.1",
     "postcss": "8.4.23",
@@ -59,6 +58,32 @@
     ]
   },
   "devDependencies": {
-    "@types/react-copy-to-clipboard": "^5.0.4"
+    "@swc/jest": "^0.2.26",
+    "babel-jest": "^29.5.0",
+    "jest-fetch-mock": "^3.0.3",
+    "ts-jest": "^29.1.0"
+  },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/src/tests/**/*.(test|spec).(ts|tsx)"
+    ],
+    "transform": {
+      "^.+\\.ts?$": "ts-jest",
+      "^.+\\.(js|jsx)$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "pages/(.*)": [
+        "<rootDir>/src/pages/$1"
+      ],
+      "components/(.*)": [
+        "<rootDir>/src/components/$1"
+      ],
+      "services/(.*)": [
+        "<rootDir>/src/services/$1"
+      ],
+      "tests/(.*)": [
+        "<rootDir>/src/tests/$1"
+      ]
+    }
   }
 }
