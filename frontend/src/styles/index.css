@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer base {
+  ul, ol {
+    list-style: revert;
+  }
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -30,23 +35,9 @@ body {
   display: flex;
   margin: 10px 0;
   justify-content: center;
+  align-items: center;
 }
 
-.chat-message.user {
-  background-color: #d7d7d7;
-  height: 97px;
-  width: 100%;
-}
-
-.chat-message.assistant {
-}
-
-.chat-message.user .message {
-  color: black;
-}
-
-.chat-message.assistant .message {
-}
 
 textarea:focus-visible {
   outline: none;
@@ -78,4 +69,8 @@ textarea {
   resize: none;
   -moz-resize: none;
   -webkit-resize: none;
+}
+
+pre code.hljs{
+  border-radius: 6px;
 }

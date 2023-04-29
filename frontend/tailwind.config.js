@@ -4,6 +4,11 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    listStyleType: {
+      none: 'none',
+      square: 'square',
+      roman: 'upper-roman',
+    },
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

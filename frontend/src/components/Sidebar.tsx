@@ -10,10 +10,10 @@ function Sidebar({ isOpen, toggleNavbar }: SidebarProps) {
   return (
     <Transition
       show={isOpen}
-      enter="transition ease-in-out duration-100 transform"
+      enter="transition ease-in-out duration-300 transform"
       enterFrom="-translate-x-full"
       enterTo="translate-x-0"
-      leave="transition ease-in-out duration-100 transform"
+      leave="transition ease-in-out duration-300 transform"
       leaveFrom="translate-x-0"
       leaveTo="-translate-x-full"
     >

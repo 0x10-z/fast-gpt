@@ -1,4 +1,4 @@
-import "./App.css";
+import "./styles/App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
@@ -26,8 +26,8 @@ function App() {
         )}
       </button>
       <Sidebar isOpen={isOpen} toggleNavbar={toggleNavbar} />
-      <div className={`app-content ${isOpen ? "ml-80 hidden md:block" : ""}`}>
-        <div className="flex-1 max-w-screen-xl m-auto">
+      <div className={`app-content ${isOpen ? "ml-80 hidden md:block" : ""} bg-gradient-to-t from-gray-900 to-gray-200`}>
+        <div className="flex-1 max-w-screen-xl m-auto bg-white">
           <div className="w-chat-window">
             <ChatWindow />
           </div>

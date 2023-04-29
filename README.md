@@ -8,5 +8,7 @@
 
 ```bash
 echo -n "OPEN_API_KEY=<apikey>" > backend/.env
+echo -n "MAX_TOKENS=1000" >> backend/.env
+echo -n "REACT_APP_API_URL=http://localhost:5000/" > frontend/.env
 docker-compose up
 ```
