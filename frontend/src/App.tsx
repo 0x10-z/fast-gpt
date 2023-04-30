@@ -27,7 +27,7 @@ function App() {
   };
 
   return (
-    <div className="app-container">
+    <div className="app-container bg-gradient-to-t from-gray-900 to-gray-200">
       { token && 
         <button
           className="fixed z-20 top-4 right-4 p-2 rounded-full bg-gray-800 text-white"
@@ -41,7 +41,7 @@ function App() {
         </button>
       }
       <Sidebar isOpen={isOpen} toggleNavbar={toggleNavbar} handleLogout={handleLogout} />
-      <div className={`app-content ${isOpen ? "ml-80 hidden md:block" : ""} bg-gradient-to-t from-gray-900 to-gray-200`}>
+      <div className={`app-content ${isOpen ? "ml-80 hidden md:block" : ""} `}>
         <div className="flex-1 max-w-screen-xl m-auto bg-white">
           {token ? (
             <div className="w-chat-window">
