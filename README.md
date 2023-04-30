@@ -1,6 +1,6 @@
 # Fast-GPT
 
-![](https://github.com/0x10-z/fast-gpt/workflows/fast-gpt/tests%20with%20Docker/badge.svg?branch=master)
+![](https://github.com/0x10-z/fast-gpt/actions/workflows/master.yml/badge.svg)
 ![](https://img.shields.io/badge/Build%20with-Docker-blue)
 ![](https://img.shields.io/badge/Testing-For%20sure-red)
 ![](https://img.shields.io/badge/Python-FastAPI-brightgreen)
