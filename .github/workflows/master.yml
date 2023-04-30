@@ -34,9 +34,9 @@ jobs:
           path: frontend_coverage
   backend:
     runs-on: ubuntu-latest
-      services:
-        docker:
-          image: docker:23.0-dind
+    services:
+      docker:
+        image: docker:20.10.8-dind
     steps:
       - uses: actions/checkout@v2
       - name: Prepare env files
