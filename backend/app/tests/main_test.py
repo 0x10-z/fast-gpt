@@ -39,6 +39,15 @@ class MockOpenAI:
     def completion(self, content):
         return self.message_list.messages
 
+class MockOpenAI:
+    def __init__(self):
+        self.message_list = MessageList()
+        self.message_list.messages.append(
+            Message(id="1234", role=Role.USER, content="Mocked!!", timestamp="111")
+        )
+
+    def completion(self, content):
+        return self.message_list.messages
 
 def test_200():
     # mock

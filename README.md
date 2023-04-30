@@ -21,7 +21,7 @@ docker-compose run --rm back-fast-gpt isort .
 docker-compose run --rm back-fast-gpt ruff . --fix
 docker-compose run --rm back-fast-gpt black .
 docker-compose run --rm back-fast-gpt pytest -vv
-docker-compose run --rm back-fast-gpt pytest --cov-report html
+docker-compose run --rm back-fast-gpt pytest --cov=. --cov-report html
 ```
 
 # Frontend commands

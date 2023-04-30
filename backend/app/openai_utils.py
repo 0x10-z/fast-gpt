@@ -9,7 +9,7 @@ message_list = MessageList()
 
 
 class OpenAI:
-    def __init__(self):
+    def __init__(self,):
         self.openai = openai
         self.openai.organization = "org-keCQjcMENEnF0JDMPkPFs9YC"
         self.openai.api_key = os.getenv("OPENAI_API_KEY")
