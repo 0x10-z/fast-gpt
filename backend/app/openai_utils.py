@@ -2,18 +2,34 @@ import os
 import time
 
 import openai
+from fastapi import Depends
 
 from models import Message, MessageList, Role
 
 message_list = MessageList()
 
 
-class OpenAI:
-    def __init__(self,):
+class OpenAIWrapper:
+    def __init__(
+        self,
+    ):
         self.openai = openai
         self.openai.organization = "org-keCQjcMENEnF0JDMPkPFs9YC"
         self.openai.api_key = os.getenv("OPENAI_API_KEY")
         self.max_tokens = int(os.getenv("MAX_TOKENS", 1000))
+
+    def completion(self, messages):
+        return openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
+            temperature=0,
+            max_tokens=self.max_tokens,
+        )
+
+
+class OpenAI:
+    def __init__(self, openai_wrapper: OpenAIWrapper = Depends(OpenAIWrapper)):
+        self.openai_wrapper = openai_wrapper
 
     def completion(self, content):
         message_list.messages.append(Message(role=Role.USER, content=content))
@@ -41,12 +57,8 @@ class OpenAI:
         openai_response = None
         while not success and retries > 0:
             try:
-                openai_response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=message_list.to_gpt(),
-                    temperature=0,
-                    max_tokens=self.max_tokens,
-                )
+                openai_response = self.openai_wrapper.completion(message_list.to_gpt())
+
                 success = True
             except Exception as ex:
                 retries -= 1

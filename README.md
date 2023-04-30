@@ -1,8 +1,11 @@
 # Fast-GPT
 
 ![](https://img.shields.io/badge/Build%20with-Docker-blue)
-![](https://img.shields.io/badge/Docker%20compose-Friendly-orange)
+![](https://img.shields.io/badge/Testing-For%20sure-red)
 ![](https://img.shields.io/badge/Python-FastAPI-brightgreen)
+![](https://img.shields.io/badge/Node-React-blue)
+![](https://img.shields.io/badge/Linters-Black%20Isort%20ruff-black)
+
 
 # Quick guide
 
@@ -17,8 +20,8 @@ docker-compose up
 # Backend commands
 
 ```bash
-docker-compose run --rm back-fast-gpt isort .
 docker-compose run --rm back-fast-gpt ruff . --fix
+docker-compose run --rm back-fast-gpt isort .
 docker-compose run --rm back-fast-gpt black .
 docker-compose run --rm back-fast-gpt pytest -vv
 docker-compose run --rm back-fast-gpt pytest --cov=. --cov-report html

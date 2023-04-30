@@ -21,8 +21,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 class ResponseMessage(BaseModel):
     message: str
+
 
 @app.post("/")
 def index(response_message: ResponseMessage, openai: OpenAI = Depends(OpenAI)):

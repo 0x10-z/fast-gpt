@@ -1,8 +1,7 @@
 from fastapi.testclient import TestClient
 
 from main import app
-from models import Message, MessageList, Role
-from openai_utils import OpenAI
+from openai_utils import OpenAIWrapper
 
 client = TestClient(app)
 
@@ -30,35 +29,31 @@ def test_422_field_required():
 
 
 class MockOpenAI:
-    def __init__(self):
-        self.message_list = MessageList()
-        self.message_list.messages.append(
-            Message(id="1234", role=Role.USER, content="Mocked!!", timestamp="111")
-        )
+    class Choices:
+        class Message:
+            message = {
+                "role": "assistant",
+                "content": "Mocked!!",
+                "id": "111",
+                "timestamp": "222",
+            }
 
-    def completion(self, content):
-        return self.message_list.messages
+        choices = [Message()]
 
-class MockOpenAI:
-    def __init__(self):
-        self.message_list = MessageList()
-        self.message_list.messages.append(
-            Message(id="1234", role=Role.USER, content="Mocked!!", timestamp="111")
-        )
+    def completion(self, _=None):
+        return self.Choices()
 
-    def completion(self, content):
-        return self.message_list.messages
 
 def test_200():
     # mock
     mocked_openai = MockOpenAI()
-    app.dependency_overrides[OpenAI] = MockOpenAI
+    app.dependency_overrides[OpenAIWrapper] = MockOpenAI
 
     with TestClient(app) as client:
-        response = client.post("/", json={"message": "Hola!"})
+        response = client.post("/", json={"message": "Mocked!!"})
+        json_response = response.json()
         assert response.status_code == 200
-        assert response.json() == {
-            "context": mocked_openai.message_list.messages,
-            "last_response": "Mocked!!",
-            "success": True,
-        }
+        assert json_response["last_response"] == "Mocked!!"
+        assert json_response["success"] is True
+        assert len(json_response["context"]) == 2
+        assert mocked_openai.completion().choices[0].message in json_response["context"]
