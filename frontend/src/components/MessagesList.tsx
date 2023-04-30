@@ -19,37 +19,37 @@ function MessagesList({ loading, messages, lastMessageRef }: MessagesListProps) 
   });
  
   return (
-    <div className="flex flex-col overflow-y-auto space-y-4 w-full" id="scroll-container">
-  {messages.map((message, index) => (
-    <div
-      key={index}
-      custom-timestamp={message.timestamp}
-      className={`flex flex-row py-4 ${
-        message.sender === "user" ? "user bg-gray-200 h-40" : "assistant"
-      }`}>
-      <div className="ml-4 pb-2 w-[40px] flex flex-row items-start">
-        <img
-          className="ring-2 ring-black"
-          alt={message.sender === "user" ? "user avatar" : "chatgpt avatar"}
-          src={message.sender === "user" ? "user.png" : "chatgpt.png"}
-        />
-      </div>
-      <div
-        ref={lastMessageRef}
-        className="flex ml-10 my-5 mr-40 justify-start items-start flex bg-gray w-full h-full">
-        {index === messages.length - 1 && loading ? (
-          <div className="flex justify-center items-center bg-gray-300 bg-opacity-50">
-            {<Loader />}
+    <div className="flex flex-col space-y-4 w-full" id="scroll-container">
+      {messages.map((message, index) => (
+        <div
+          key={index}
+          custom-timestamp={message.timestamp}
+          className={`flex flex-row sm:px[2px] md:px-10 lg:px-40 xl:px-40 justify-center py-4 ${
+            message.sender === "user" ? "user bg-gray-200 h-40" : "assistant"
+          }`}>
+          <div className="pb-2 w-[40px] flex flex-row items-start mx-5">
+            <img
+              className="ring-2 ring-black"
+              alt={message.sender === "user" ? "user avatar" : "chatgpt avatar"}
+              src={message.sender === "user" ? "user.png" : "chatgpt.png"}
+            />
           </div>
-        ) : (
-          <div className="">
-            <ReactMarkdown children={message.content} />
+          <div
+            ref={lastMessageRef}
+            className="flex justify-start items-start flex bg-gray w-full h-full ">
+            {index === messages.length - 1 && loading ? (
+              <div className="flex justify-center items-center bg-gray-300 bg-opacity-50">
+                {<Loader />}
+              </div>
+            ) : (
+              <div className="w-full">
+                <ReactMarkdown children={message.content} />
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      ))}
     </div>
-  ))}
-</div>
 
   );
 }

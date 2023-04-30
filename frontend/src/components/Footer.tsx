@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <div className="px-3 pt-2 pb-3 text-center text-xs text-gray-600 dark:text-gray-300 md:px-4 md:pt-3 md:pb-6">
       <span>
-        El frontend de este cliente de{" "}
+        Cliente {" "}
         <a
           href="https://chat.openai.com/"
           target="_blank"
@@ -13,24 +13,15 @@ const Footer = () => {
           className="underline">
           ChatGPT
         </a>{" "}
-        se ha construido con ayuda del propio ChatGPTv3.5, basado en{" "}
+        creado con fines educativos. Código disponible en{" "}
         <a
-          href="https://es.react.dev/"
+          href="https://github.com/0x10-z/fast-gpt"
           target="_blank"
           rel="noreferrer"
           className="underline">
-          React
-        </a>{" "}
-        y{" "}
-        <a
-          href="https://tailwindcss.com/"
-          target="_blank"
-          rel="noreferrer"
-          className="underline">
-          Tailwind CSS
-        </a>
-        .{" "}
-        Frontend Version { FRONTEND_VERSION }
+          Github
+        </a>.{" "}
+        Frontend v{ FRONTEND_VERSION }
       </span>
     </div>
   );
