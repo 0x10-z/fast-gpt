@@ -24,7 +24,7 @@ function ChatInput({ onSendMessage, inputRef }: ChatInputProps) {
   };
 
   return (
-    <div className="flex px-60 flex-row items-center">
+    <div className="flex px-10 sm:px-10 md:px-40 lg:px-60 flex-row items-center">
       <Input
         inputRef={inputRef}
         message={message}
