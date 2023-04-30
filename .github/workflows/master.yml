@@ -14,7 +14,7 @@ jobs:
       docker:
         image: docker:23.0-dind
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Prepare env files
         run: |
           echo -n "OPEN_API_KEY=MY_FAKE_APIKEY" > backend/.env
@@ -28,7 +28,7 @@ jobs:
         run: |
           docker-compose -f docker-compose.ci.yml run --rm front-fast-gpt npm run test:coverage
       - name: Upload frontend coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Frontend coverage
           path: frontend_coverage
@@ -38,7 +38,7 @@ jobs:
       docker:
         image: docker:20.10.8-dind
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Prepare env files
         run: |
           echo -n "OPEN_API_KEY=MY_FAKE_APIKEY" > backend/.env
@@ -57,7 +57,7 @@ jobs:
         run: |
           docker-compose -f docker-compose.ci.yml run --rm back-fast-gpt pytest --cov=. --cov-report html
       - name: Upload backend coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Backend coverage
           path: backend_coverage
