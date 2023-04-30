@@ -2,12 +2,12 @@ FROM node:18.16.0-alpine
 
 WORKDIR /app
 
-COPY package*.json /app
+COPY package*.json /app/
 
 RUN npm install
 RUN npm install -D postcss-cli
 
-COPY . /app
+COPY . /app/
 
 #RUN npm test
 #RUN npm run build
