@@ -41,11 +41,11 @@ function MessagesList({ loading, messages, lastMessageRef }: MessagesListProps) 
           className="flex justify-start items-center flex bg-gray w-full h-full"
         >
           {index === messages.length - 1 && loading ? (
-            <div className="flex justify-center items-center bg-gray-300 bg-opacity-50">
+            <div className="flex mb-10 justify-center items-center bg-gray-300 bg-opacity-50">
               {<Loader />}
             </div>
           ) : (
-            <div className="w-full justify-center mr-10">
+            <div className="w-full mr-10">
               <ReactMarkdown children={message.content} />
             </div>
           )}
