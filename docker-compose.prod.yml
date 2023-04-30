@@ -5,7 +5,7 @@ services:
     ports:
       - "5000:80"
     environment:
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=<your_apikey>
       - MAX_TOKENS=1000
       - CORS_ORIGINS=http://localhost
   front-fast-gpt-prod:
