@@ -4,6 +4,18 @@ from enum import Enum
 from typing import List, Optional
 
 from pydantic import BaseModel, validator
+from sqlalchemy import Column, Integer, String
+
+from database import Base
+
+
+# SQLAlchemy
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(50), unique=True, index=True)
+    password = Column(String(50))
 
 
 class Role(str, Enum):
