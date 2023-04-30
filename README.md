@@ -35,3 +35,22 @@ docker-compose run --rm front-fast-gpt npm test
 docker-compose run --rm front-fast-gpt npm run build
 docker-compose run --rm front-fast-gpt npm run test:coverage
 ```
+
+# Fast-GPT project deployment
+
+```bash
+docker-compose -f docker-compose.prod.yml up
+```
+
+# Clean temp folders
+
+```bash
+sudo rm -r backend/app/__pycache__
+sudo rm -r backend/app/.pytest_cache
+sudo rm -r backend/app/.ruff_cache
+sudo rm -r backend/app/htmlcov
+sudo rm -r backend/app/.coverage
+sudo rm -r frontend/build
+sudo rm -r frontend/coverage
+sudo rm -r frontend/node_modules
+```

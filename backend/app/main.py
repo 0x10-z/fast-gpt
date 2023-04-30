@@ -13,6 +13,8 @@ origins = [
     os.getenv("CORS_ORIGINS"),
 ]
 
+print("ORIGINS: {}".format(origins))
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -35,6 +37,9 @@ def index(response_message: ResponseMessage, openai: OpenAI = Depends(OpenAI)):
         response["error"] = "Please, add message parameter ?message=<your message>"
     return response
 
+@app.get("/")
+def index():
+    return {"detail": "Method Now Allowed", "message": "Please, use POST method"}
 
 def process_message(openai, message, response):
     try:

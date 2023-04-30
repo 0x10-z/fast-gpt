@@ -1,0 +1,18 @@
+services:
+  back-fast-gpt-prod:
+    build:
+      context: ./backend
+    ports:
+      - "5000:80"
+    environment:
+      - OPENAI_API_KEY=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
+      - MAX_TOKENS=1000
+      - CORS_ORIGINS=http://localhost
+  front-fast-gpt-prod:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    ports:
+      - "80:80"
+    environment:
+      - REACT_APP_API_URL="http://localhost:5000/"
