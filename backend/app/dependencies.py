@@ -1,8 +1,8 @@
-from fastapi import HTTPException, Security
+from fastapi import HTTPException, Security, Depends
 from fastapi.security.api_key import APIKeyHeader
-
+from sqlalchemy.orm import Session
 from database import SessionLocal
-
+from models import User
 
 def get_db():
     db = SessionLocal()
@@ -12,12 +12,11 @@ def get_db():
         db.close()
 
 
-valid_apikey = "1234"
 api_key_name = "Authorization"
 api_key_header = APIKeyHeader(name=api_key_name, auto_error=False)
 
 
-async def get_api_key(api_key_header: str = Security(api_key_header)):
+async def get_api_key(api_key_header: str = Security(api_key_header), db: Session = Depends(get_db)):
     try:
         if not api_key_header:
             raise_http_exception()
@@ -28,11 +27,13 @@ async def get_api_key(api_key_header: str = Security(api_key_header)):
 
     except ValueError:
         raise_http_exception()
-    if not token or token != valid_apikey:
-        raise HTTPException(status_code=403, detail="Invalid API key")
 
-    print("Token {} made a request".format(token))
-    return token
+    user = db.query(User).filter(User.api_key == token).first()
+    if not user:
+        raise HTTPException(status_code=403, detail="Invalid API key")
+    
+    print("User {} made a request".format(user.username))
+    return user
 
 
 def raise_http_exception():

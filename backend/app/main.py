@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 
 from database import Base, SessionLocal, engine
 from router import router
+from models import create_initial_users
 
 app = FastAPI()
 
@@ -41,6 +42,6 @@ async def db_session_middleware(request: Request, call_next):
 
 
 Base.metadata.create_all(bind=engine)
-
+create_initial_users(SessionLocal())
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=80)

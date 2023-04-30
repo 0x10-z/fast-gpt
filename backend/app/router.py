@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends
 from fastapi.security.api_key import APIKey
 from pydantic import BaseModel
-
+from models import User
 from core import VERSION
-from dependencies import get_api_key
+from dependencies import get_api_key, get_db
 from openai_utils import OpenAI
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 
@@ -14,17 +15,17 @@ class Login(BaseModel):
 
 
 @router.post("/login")
-def login(credentials: Login):
+def login(credentials: Login, db: Session = Depends(get_db)):
     response = {"success": False}
-    if (
-        credentials
-        and credentials.username == "user"
-        and credentials.password == "user"
-    ):
-        response["success"] = True
-        response["token"] = 1234
+    if credentials:
+        user = User.authenticate(db, username=credentials.username, password=credentials.password)
+        if user:
+            response["success"] = True
+            response["token"] = user.api_key
+        else:
+            response["error"] = "Credentials are incorrect"
     else:
-        response["error"] = "Please, add message parameter ?message=<your message>"
+        response["error"] = "Username and Password fields are mandatory"
     return response
 
 
@@ -33,21 +34,27 @@ def version():
     return {"version": VERSION}
 
 
-class ResponseMessage(BaseModel):
+class RequestMessage(BaseModel):
     message: str
 
 
 @router.post("/")
 def index(
-    response_message: ResponseMessage,
+    request_message: RequestMessage,
     openai: OpenAI = Depends(OpenAI),
-    api_key: APIKey = Depends(get_api_key),
+    user: User = Depends(get_api_key),
+    db: Session = Depends(get_db)
 ):
     response = {"success": False}
-    if response_message:
-        response = process_message(openai, response_message.message, response)
+    if request_message:
+        success = user.subtract_tokens(db, len(request_message.message)/2.5)
+        if success:
+            response = process_message(openai, request_message.message, response)
+            success = user.subtract_tokens(db, len(response["last_response"])/2.5)
+        else:
+            response["error"] = "User {} has not enough available tokens.".format(user.username)
     else:
-        response["error"] = "Please, add message parameter ?message=<your message>"
+        response["error"] = "Message field is mandatory"
     return response
 
 
