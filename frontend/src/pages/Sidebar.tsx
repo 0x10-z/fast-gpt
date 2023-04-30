@@ -1,4 +1,3 @@
-import { Transition } from "@headlessui/react";
 import SidebarFooter from "components/SidebarFooter";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -10,15 +9,15 @@ interface SidebarProps {
 
 function Sidebar({ isOpen, toggleNavbar, handleLogout }: SidebarProps) {
   return (
-    <Transition
-      show={isOpen}
-      enter="transition ease-in-out duration-100 transform"
-      enterFrom="-translate-x-full"
-      enterTo="translate-x-0"
-      leave="transition ease-in-out duration-100 transform"
-      leaveFrom="translate-x-0"
-      leaveTo="-translate-x-full"
-    >
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="fixed inset-y-0 left-0 z-50 w-64 bg-gray-800"
+          initial={{ x: -300 }}
+          animate={{ x: 0 }}
+          exit={{ x: -300 }}
+          transition={{ ease: "easeInOut", duration: 0.3 }}
+        >
   <div className="fixed h-screen w-80 flex flex-col bg-gray-900 text-gray-100 shadow-lg">
     <div className="flex items-center justify-between px-4 py-3">
       <h1 className="text-2xl font-bold">Hola Iker!</h1>
@@ -40,8 +39,9 @@ function Sidebar({ isOpen, toggleNavbar, handleLogout }: SidebarProps) {
       <SidebarFooter />
     </div>
   </div>
-</Transition>
-
+  </motion.div>
+)}
+</AnimatePresence>
   );
 }
 
