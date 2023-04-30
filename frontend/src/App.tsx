@@ -45,7 +45,7 @@ function App() {
         <div className="flex-1 max-w-screen-xl m-auto bg-white">
           {token ? (
             <div className="w-chat-window">
-              <ChatWindow />
+              <ChatWindow userToken={token}/>
             </div>
           ) : (
             <div className="w-chat-window">

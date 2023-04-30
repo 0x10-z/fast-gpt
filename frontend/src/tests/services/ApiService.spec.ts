@@ -33,7 +33,7 @@ describe('ApiService', () => {
 
       // sut
       const sut = new ApiService();
-      const message = await sut.chatGpt(input);
+      const message = await sut.chatGpt(input, "mockedToken");
   
       // assert
       expect(message).toBeInstanceOf(Message);
@@ -53,7 +53,7 @@ describe('ApiService', () => {
     const sut = new ApiService();
 
     // assert
-    await expect(sut.chatGpt('Hello')).rejects.toThrow(
+    await expect(sut.chatGpt('Hello', "mockedToken")).rejects.toThrow(
       'Error sending message: 404 Not Found'
     );
   });
@@ -66,7 +66,7 @@ describe('ApiService', () => {
     const sut = new ApiService();
 
     // assert
-    await expect(sut.chatGpt('Hello')).rejects.toThrow(
+    await expect(sut.chatGpt('Hello', "mockedToken")).rejects.toThrow(
       'Something went wrong'
     );
   });

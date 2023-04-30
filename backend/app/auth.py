@@ -22,6 +22,7 @@ async def get_api_key(api_key_header: str = Security(api_key_header)):
     if not token or token != valid_apikey:
         raise HTTPException(status_code=403, detail="Invalid API key")
 
+    print("Token {} made a request".format(token))
     return token
 
 

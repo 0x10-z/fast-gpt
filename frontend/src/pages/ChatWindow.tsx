@@ -5,7 +5,6 @@ import MessagesList from "components/MessagesList";
 import Footer from "components/Footer";
 import { Message, Sender } from "components/Message";
 import { ApiService } from "services/ApiService";
-import { showErrorNotification } from "utils/utils";
 const apiService = new ApiService();
 
 /* eslint-disable no-multi-str */
@@ -26,11 +25,14 @@ const defaultMessages = [
    Desde ese día, Tomás y la mariposa se convirtieron en grandes amigos y siempre estaban allí para ayudarse mutuamente en cualquier situación difícil que pudieran enfrentar. Y así, el pequeño ratón aprendió que la amistad y la ayuda desinteresada son las cosas más valiosas que uno puede tener en la vida.", Sender.Assistant),
 ]
 
+interface ChatWindowProps {
+  userToken: string;
+}
 
-function ChatWindow() {
+function ChatWindow({ userToken }: ChatWindowProps ) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
-
+  
   const [messages, setMessages] = useState<Message[]>(defaultMessages);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -58,11 +60,10 @@ function ChatWindow() {
       setMessages((prevState) => [...prevState, userMessage]);
       const temporalAssistantMessage = Message.createMessage("#...", Sender.Assistant);
       setMessages((prevState) => [...prevState, temporalAssistantMessage]);
-      const assistantMessage = await apiService.chatGpt(message);
+      const assistantMessage = await apiService.chatGpt(message, userToken);
       addMessageToState(assistantMessage);
       setLoading(false);
     } catch (error: any) {
-      showErrorNotification("El backend parece no estar funcionando...");
       const errorMessage = Message.createMessage(error.message, Sender.Assistant);
       addMessageToState(errorMessage);
       setLoading(false);
