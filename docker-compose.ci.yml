@@ -7,6 +7,8 @@ services:
       - "5678:5678"
     env_file:
       - ./backend/.env
+    volumes:
+      - ./backend_coverage:/app/htmlcov
 
   front-fast-gpt:
     build:
@@ -15,3 +17,5 @@ services:
       - "3000:3000"
     env_file:
       - ./frontend/.env
+    volumes:
+      - ./frontend_coverage:/app/coverage/lcov-report

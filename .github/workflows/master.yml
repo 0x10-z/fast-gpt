@@ -39,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Backend coverage
-          path: backend/app/htmlcov
+          path: backend_coverage
       - name: Upload frontend coverage
         uses: actions/upload-artifact@v2
         with:
