@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ChatInput from "components/ChatInput";
 import MessagesList from "components/MessagesList";
 import Footer from "components/Footer";
 import { Message, Sender } from "components/Message";
 import { ApiService } from "services/ApiService";
-
+import { showErrorNotification } from "utils/utils";
 const apiService = new ApiService();
 
 /* eslint-disable no-multi-str */
@@ -25,7 +24,6 @@ const defaultMessages = [
   Finalmente, después de mucho buscar, Tomás encontró a la mariposa y le explicó su situación. La mariposa, recordando la ayuda que Tomás le había brindado, decidió ayudarlo y lo guió de regreso a su cueva en el bosque.\
   Desde ese día, Tomás y la mariposa se convirtieron en grandes amigos y siempre estaban allí para ayudarse mutuamente en cualquier situación difícil que pudieran enfrentar. Y así, el pequeño ratón aprendió que la amistad y la ayuda desinteresada son las cosas más valiosas que uno puede tener en la vida.", Sender.Assistant),
 ]
-
 
 
 function ChatWindow() {
@@ -81,15 +79,6 @@ function ChatWindow() {
   );
 }
 
-function showErrorNotification(errorMessage: string) {
-  toast.error(errorMessage, {
-    position: toast.POSITION.TOP_RIGHT,
-    autoClose: 5000,
-    hideProgressBar: true,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: false,
-  });
-}
+
 
 export default ChatWindow;

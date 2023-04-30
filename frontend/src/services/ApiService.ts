@@ -23,4 +23,24 @@ export class ApiService{
     }
   }
 
+  async login(username: string, password: string): Promise<string | null> {
+    const response = await fetch(API_URL + "login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: username, password: password }),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      if (data.success) {
+        return data.token;
+      } else {
+        return null;
+      }
+    } else {
+      throw new Error(
+        `Error sending message: ${response.status} ${response.statusText}`
+      );
+    }
+  }
+
 }

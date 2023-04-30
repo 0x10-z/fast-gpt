@@ -1,59 +1,77 @@
 import { useState } from "react";
+import { ApiService } from "services/ApiService";
+import { showErrorNotification } from "utils/utils";
+const apiService = new ApiService();
 
-function LoginForm() {
+interface LoginProps {
+  onLoginSuccess: (token: string) => void;
+}
+
+function LoginForm({onLoginSuccess}: LoginProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log("Username: ", username);
     console.log("Password: ", password);
-    // Aquí puedes enviar los datos a tu backend
+    const token = await apiService.login(username, password);
+    if (token){
+      onLoginSuccess(token)
+    }else{
+      showErrorNotification("El nombre de usuario o contraseña son incorrectos.")
+    }
   };
 
   return (
-    <form
-      data-testid="login-form"
-      className="bg-white shadow-md px-8 pt-6 pb-8 mb-4"
-      onSubmit={handleSubmit}>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 font-bold mb-2"
-          htmlFor="username">
-          Usuario
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="username"
-          type="text"
-          placeholder="Nombre de usuario"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+    <div className="flex flex-col min-h-screen bg-gray-100 sm:justify-center items-center pt-6 sm:pt-0">
+      <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+        <h2 className="text-center font-semibold text-3xl lg:text-4xl text-gray-800 mb-4">
+          Iniciar sesión
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2" htmlFor="username">
+              Username
+            </label>
+            <input
+              autoFocus
+              className="w-full px-4 py-2 border rounded-md text-gray-700 focus:outline-none focus:border-blue-500"
+              id="username"
+              type="username"
+              name="username"
+              placeholder="Ingresa tu username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2" htmlFor="password">
+              Contraseña
+            </label>
+            <input
+              className="w-full px-4 py-2 border rounded-md text-gray-700 focus:outline-none focus:border-blue-500"
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Ingresa tu contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
+            >
+              Iniciar sesión
+            </button>
+          </div>
+        </form>
       </div>
-      <div className="mb-6">
-        <label
-          className="block text-gray-700 font-bold mb-2"
-          htmlFor="password">
-          Contraseña
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="password"
-          type="password"
-          placeholder="**********"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div className="flex items-center justify-between">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="submit">
-          Enviar
-        </button>
-      </div>
-    </form>
+    </div>
   );
 }
 

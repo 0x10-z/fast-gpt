@@ -1,4 +1,6 @@
 
+import { FRONTEND_VERSION } from "Globals";
+
 const Footer = () => {
   return (
     <div className="px-3 pt-2 pb-3 text-center text-xs text-gray-600 dark:text-gray-300 md:px-4 md:pt-3 md:pb-6">
@@ -28,6 +30,7 @@ const Footer = () => {
           Tailwind CSS
         </a>
         .{" "}
+        Frontend Version { FRONTEND_VERSION }
       </span>
     </div>
   );

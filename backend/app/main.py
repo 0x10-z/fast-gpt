@@ -27,7 +27,7 @@ app.add_middleware(
 
 
 class Login(BaseModel):
-    user: str
+    username: str
     password: str
 
 
@@ -38,7 +38,7 @@ class ResponseMessage(BaseModel):
 @app.post("/login")
 def login(credentials: Login):
     response = {"success": False}
-    if credentials and credentials.user == "user" and credentials.password == "user":
+    if credentials and credentials.username == "user" and credentials.password == "user":
         response["success"] = True
         response["token"] = 1234
     else:
