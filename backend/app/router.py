@@ -8,7 +8,6 @@ from openai_utils import OpenAI
 
 router = APIRouter()
 
-
 class Login(BaseModel):
     username: str
     password: str
@@ -54,7 +53,6 @@ def index(
 
 def process_message(openai, message, response):
     try:
-        print(openai)
         context = openai.completion(message)
         response["context"] = context
         print(context[-1].content)
