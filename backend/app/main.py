@@ -9,6 +9,8 @@ from pydantic import BaseModel
 import auth
 from openai_utils import OpenAI
 
+VERSION = "1.0.0"
+
 app = FastAPI()
 
 origins = [
@@ -45,6 +47,9 @@ def login(credentials: Login):
         response["error"] = "Please, add message parameter ?message=<your message>"
     return response
 
+@app.get("/version")
+def version():
+    return {"version": VERSION}
 
 @app.post("/")
 def index(

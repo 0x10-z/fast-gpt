@@ -1,7 +1,18 @@
 
-import { FRONTEND_VERSION } from "Globals";
+import { Globals } from "Globals";
+import { useState, useEffect } from "react";
 
 const Footer = () => {
+  const [backendVersion, setBackendVersion] = useState<string>();
+
+  useEffect(() => {
+    async function fetchBackendVersion(){
+      const response = await Globals.getBackendVersion()
+      setBackendVersion(response);
+    }
+
+    fetchBackendVersion();
+  }, []);
   return (
     <div className="px-3 pt-2 pb-3 text-center text-xs text-gray-600 dark:text-gray-300 md:px-4 md:pt-3 md:pb-6">
       <span>
@@ -21,7 +32,8 @@ const Footer = () => {
           className="underline">
           Github
         </a>.{" "}
-        Frontend v{ FRONTEND_VERSION }
+        Frontend v{ Globals.FRONTEND_VERSION }{" - "}
+        Backend v{backendVersion}
       </span>
     </div>
   );
