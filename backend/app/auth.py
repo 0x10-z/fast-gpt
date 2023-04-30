@@ -9,24 +9,25 @@ api_key_header = APIKeyHeader(name=api_key_name, auto_error=False)
 
 
 async def get_api_key(api_key_header: str = Security(api_key_header)):
-    auth_header = api_key_header
-    print(auth_header)
     try:
-        scheme, token = auth_header.split()
+        if not api_key_header:
+            raise_http_exception()
+
+        scheme, token = api_key_header.split()
         if scheme.lower() != "bearer":
-            raise HTTPException(
-                status_code=401,
-                detail="Invalid authentication scheme",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
+            raise_http_exception()
+
     except ValueError:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid Authorization header",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    print(token)
+        raise_http_exception()
     if not token or token != valid_apikey:
         raise HTTPException(status_code=403, detail="Invalid API key")
 
     return token
+
+
+def raise_http_exception():
+    raise HTTPException(
+        status_code=401,
+        detail="Invalid Authorization header",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
