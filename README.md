@@ -15,6 +15,7 @@ echo "OPEN_API_KEY=<apikey>" > backend/.env
 echo "MAX_TOKENS=1000" >> backend/.env
 echo "CORS_ORIGINS=http://localhost:3000" >> backend/.env
 echo -n "REACT_APP_API_URL=http://localhost:5000/\n" > frontend/.env
+cd frontend && npm install && cd ..
 docker-compose up
 ```
 
@@ -45,6 +46,7 @@ docker-compose -f docker-compose.prod.yml up
 # Clean temp folders
 
 ```bash
+sudo chown iocio:iocio -R *
 sudo rm -r backend/app/__pycache__
 sudo rm -r backend/app/.pytest_cache
 sudo rm -r backend/app/.ruff_cache
