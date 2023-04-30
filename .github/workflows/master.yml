@@ -1,4 +1,4 @@
-name: fast-gpt tests with Docker
+name: Github Actions
 on:
   push:
     branches:
