@@ -1,4 +1,4 @@
-name: Python tests with Docker
+name: fast-gpt tests with Docker
 on:
   push:
     branches:
@@ -24,12 +24,17 @@ jobs:
       - name: Build the Docker image
         run: |
           docker-compose build
+      - name: Python linting
+        run: |
+          docker-compose run --rm back-fast-gpt ruff .
+          docker-compose run --rm back-fast-gpt isort .
+          docker-compose run --rm back-fast-gpt black .
       - name: Test backend container
         run: |
           docker-compose run --rm back-fast-gpt pytest --cov=. --cov-report html
       - name: Test frontend container
         run: |
-          docker-compose run --rm front-fast-gpt npm run test -- --coverage .
+          docker-compose run --rm front-fast-gpt npm run test:coverage
       - name: Upload backend coverage
         uses: actions/upload-artifact@v2
         with:

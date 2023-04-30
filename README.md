@@ -32,5 +32,5 @@ docker-compose run --rm back-fast-gpt pytest --cov=. --cov-report html
 ```bash
 docker-compose run --rm front-fast-gpt npm test
 docker-compose run --rm front-fast-gpt npm run build
-docker-compose run --rm front-fast-gpt npm run test -- --coverage .
+docker-compose run --rm front-fast-gpt npm run test:coverage
 ```
