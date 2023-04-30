@@ -1,0 +1,17 @@
+services:
+  back-fast-gpt:
+    build:
+      context: ./backend
+    ports:
+      - "5000:80"
+      - "5678:5678"
+    env_file:
+      - ./backend/.env
+
+  front-fast-gpt:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/.env
