@@ -38,7 +38,7 @@ def index(response_message: ResponseMessage, openai: OpenAI = Depends(OpenAI)):
     return response
 
 @app.get("/")
-def index():
+def index_method_not_allowed():
     return {"detail": "Method Now Allowed", "message": "Please, use POST method"}
 
 def process_message(openai, message, response):
