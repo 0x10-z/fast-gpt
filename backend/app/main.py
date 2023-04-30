@@ -1,5 +1,7 @@
+import os
+
 import uvicorn
-from fastapi import FastAPI, Query
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -8,7 +10,7 @@ from openai_utils import OpenAI
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",
+    os.getenv("CORS_ORIGINS"),
 ]
 
 app.add_middleware(
@@ -19,33 +21,35 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-open_ai = OpenAI()
+# open_ai = OpenAI()
+
 
 class ResponseMessage(BaseModel):
     message: str
 
+
 @app.post("/")
-def index(response_message: ResponseMessage):
+def index(response_message: ResponseMessage, openai: OpenAI = Depends(OpenAI)):
     response = {"success": False}
     if response_message:
-        response = process_message(response_message.message, response)
+        response = process_message(openai, response_message.message, response)
     else:
         response["error"] = "Please, add message parameter ?message=<your message>"
     return response
 
 
-def process_message(message, response):
+def process_message(openai, message, response):
     try:
-        context = open_ai.completion(message)
+        context = openai.completion(message)
         response["context"] = context
         print(context[-1].content)
         response["last_response"] = context[-1].content
         response["success"] = True
     except Exception as ex:
         response["error"] = str(ex)
-    
+
     return response
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=80)
-

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Input from "./Input";
 
-interface ChatInputProps {
+export interface ChatInputProps {
   onSendMessage: (message: string) => void;
   inputRef: React.RefObject<HTMLTextAreaElement>;
 }

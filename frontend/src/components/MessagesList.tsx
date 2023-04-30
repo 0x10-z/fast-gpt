@@ -3,7 +3,6 @@ import ReactMarkdown from 'react-markdown';
 import hljs from 'highlight.js';
 import { useEffect } from "react";
 import 'highlight.js/styles/github-dark.css';
-import rehypeRaw from 'rehype-raw'
 import Loader from "./Loader";
 
 /* eslint react/no-danger: 0 */
@@ -40,7 +39,7 @@ function MessagesList({ loading, messages, lastMessageRef }: MessagesListProps) 
               </div>
             ) : (
               <div className="">
-              <ReactMarkdown rehypePlugins={[rehypeRaw]} children={message.content} />
+              <ReactMarkdown children={message.content} />
               </div>
             )}
           </div>
