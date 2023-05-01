@@ -71,7 +71,7 @@ jobs:
           name: Backend coverage
           path: backend_coverage
 
-  Push images:
+  DockerPush:
     runs-on: ubuntu-latest
     services:
       docker:
