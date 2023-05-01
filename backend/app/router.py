@@ -23,6 +23,7 @@ def login(credentials: Login, db: Session = Depends(get_db)):
             response["success"] = True
             response["token"] = user.api_key
             response["user"] = user
+            response["context"] = user.messages_2_dict()
         else:
             response["error"] = "Credentials are incorrect"
     else:
@@ -50,8 +51,9 @@ def index(
     if request_message:
         success = user.subtract_tokens(db, len(request_message.message)/2.5)
         if success:
-            response = process_message(openai, request_message.message, response)
+            response = process_message(openai, user, request_message.message, response)
             success = user.subtract_tokens(db, len(response["last_response"])/2.5)
+            user.delete_duplicates(db)
             response["user"] = user.to_sanitized_dict()
         else:
             response["error"] = "User {} has not enough available tokens.".format(user.username)
@@ -67,12 +69,12 @@ def reset(
     response = {"success": user.reset_session(db)}
     return response
 
-def process_message(openai, message, response):
+def process_message(openai, user, message, response):
     try:
-        context = openai.completion(message)
+        context = openai.completion(user, message)
         response["context"] = context
-        print(context[-1].content)
-        response["last_response"] = context[-1].content
+        print(context[-1]["content"])
+        response["last_response"] = context[-1]["content"]
         response["success"] = True
     except Exception as ex:
         response["error"] = str(ex)

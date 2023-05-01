@@ -7,10 +7,11 @@ import { HiOutlineMenu, HiX } from "react-icons/hi";
 import Sidebar from "./pages/Sidebar";
 import LoginForm from "components/Login";
 import { User } from "models/User";
+import { Auth } from "utils/auth";
 
 function App() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(User.from_dict(localStorage.getItem('session_fast_gpt')));
+  const [user, setUser] = useState<User | null>(User.from_dict(Auth.getToken()));
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -18,12 +19,12 @@ function App() {
 
   const handleLoginSuccess  = (user: User) => {
     setUser(user);
-    localStorage.setItem('session_fast_gpt', JSON.stringify(user.toDict()));
+    Auth.setToken(JSON.stringify(user.toDict()))
   };
 
   const handleLogout = () => {
     setUser(null);
-    localStorage.removeItem('session_fast_gpt');
+    Auth.removeToken();
     setIsOpen(false);
   };
 

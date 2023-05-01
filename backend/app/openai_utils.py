@@ -3,11 +3,9 @@ import time
 
 import openai
 from fastapi import Depends
-
-from models import Message, MessageList, Role
-
-message_list = MessageList()
-
+from sqlalchemy.orm import Session
+from dependencies import get_db
+from models import User
 
 class OpenAIWrapper:
     def __init__(
@@ -28,36 +26,34 @@ class OpenAIWrapper:
 
 
 class OpenAI:
-    def __init__(self, openai_wrapper: OpenAIWrapper = Depends(OpenAIWrapper)):
+    def __init__(self, openai_wrapper: OpenAIWrapper = Depends(OpenAIWrapper), db: Session = Depends(get_db)):
         self.openai_wrapper = openai_wrapper
+        self.db = db
 
-    def completion(self, content):
-        message_list.messages.append(Message(role=Role.USER, content=content))
-
+    def completion(self, user: User, content):
+        user.user_write(self.db, content)
         try:
             print("Request sent to OpenAI...")
             start = time.time()
-            openai_response = self.retry_completion(2)
+            openai_response = self.retry_completion(user, 2)
             end = time.time()
             print("Response received after {} seconds.".format(end - start))
             if openai_response:
-                message_list.messages.append(
-                    Message(**openai_response.choices[0].message)
-                )
+                user.assistant_write(self.db, openai_response.choices[0].message["content"])
             else:
                 raise Exception("OpenAI maximum retries exceeded. Please try again.")
 
-            return message_list.messages
+            return user.messages_2_dict()
         except openai.error.AuthenticationError as ex:
-            message_list.messages.pop()
+            user.delete_last_message()
             raise ex
 
-    def retry_completion(self, retries):
+    def retry_completion(self, user, retries):
         success = False
         openai_response = None
         while not success and retries > 0:
             try:
-                openai_response = self.openai_wrapper.completion(message_list.to_gpt())
+                openai_response = self.openai_wrapper.completion(user.messages_to_gpt())
 
                 success = True
             except Exception as ex:

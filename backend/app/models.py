@@ -1,19 +1,43 @@
 import uuid
 from datetime import datetime
-from enum import Enum
-from typing import List, Optional
-from datetime import datetime
 import os
-from pydantic import BaseModel, validator
-from sqlalchemy import Column, Integer, String, DateTime, func
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
+import enum
+from sqlalchemy import Column, Integer, String, DateTime, func, ForeignKey
+from sqlalchemy.orm import Session, relationship
+from sqlalchemy.types import Enum
 import hashlib
 from database import Base
 import binascii
+import json
 
 def generate_uuid():
     return str(uuid.uuid4())
+
+
+class Role(enum.Enum):
+    ASSISTANT = 1
+    USER = 2
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(String, primary_key=True, default=generate_uuid)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    role = Column(Enum(Role))
+    content = Column(String)
+    timestamp = Column(DateTime, default=datetime.utcnow())
+    #user = relationship("User", back_populates="messages")
+
+    def __init__(
+        self,
+        role: Role,
+        content: str,
+        timestamp: datetime = None,
+    ):
+        self.role = role
+        self.content = content
+        self.timestamp = timestamp or datetime.utcnow()
+        
 
 class User(Base):
     __tablename__ = "users"
@@ -26,9 +50,75 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     last_login_at = Column(DateTime, default=None)
 
+    messages = relationship("Message", backref="user")
+
+    def messages_2_dict(self,):
+        messages_dict = []
+        for message in self.messages:
+            message_dict = {
+                "id": message.id,
+                "role": "user" if message.role == Role.USER else "assistant",
+                "content": message.content,
+                "timestamp": message.timestamp.strftime("%m/%d/%Y, %H:%M:%S")
+            }
+            messages_dict.append(message_dict)
+
+        return messages_dict
+
+    def messages_to_gpt(self,):
+        temp_messages = []
+        for message in self.messages:
+            temp_messages.append({
+                "content": message.content,
+                "role": "user" if message.role == Role.USER else "assistant"
+            })
+
+        return temp_messages
+
+    def delete_last_message(self, db: Session):
+        self.messages.pop()
+        db.commit()
+
     def reset_session(self, db: Session):
-        pass
-    
+        db.query(Message).filter(Message.user_id == self.id).delete()
+        db.commit()
+
+    def user_write(self, db: Session, content: str):
+        message = Message(Role.USER, content=content)
+        self.messages.append(message)
+        db.commit()
+
+    def delete_duplicates(self, db: Session):
+        query = (
+            db.query(Message.content, func.count(Message.content))
+            .group_by(Message.content)
+            .having(func.count(Message.content) > 1)
+            .subquery()
+        )
+
+        to_delete = (
+            db.query(Message)
+            .join(User)
+            .filter(Message.content == query.c.content)
+            .filter(User.id == self.id)  # supongamos que el usuario es el de id=1
+            .order_by(Message.timestamp.desc())  # seleccionar el mensaje más reciente
+            .offset(1)  # saltar el primer mensaje (el más reciente)
+            .all()
+        )
+
+        for message in to_delete:
+            db.delete(message)
+
+        db.commit()
+
+    def assistant_write(self, db: Session, content: str):
+        try:
+            message = Message(Role.ASSISTANT, content=content)
+            self.messages.append(message)
+            db.commit()
+        except Exception as ex:
+            print("Error persisting information: {}".format(ex))
+
     def to_sanitized_dict(self):
         return {
             "id": self.id,
@@ -82,49 +172,6 @@ def verify_password(password: str, hashed_password: str) -> bool:
     pwdhash = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt.encode("ascii"), 100000)
     pwdhash = binascii.hexlify(pwdhash).decode("ascii")
     return pwdhash == stored_password
-
-class Role(str, Enum):
-    ASSISTANT = "assistant"
-    USER = "user"
-
-
-class Message(BaseModel):
-    id: Optional[str]
-    role: Role
-    content: str
-    timestamp: Optional[str]
-
-    @validator("id", pre=True, always=True)
-    def default_id(cls, value):
-        return value or str(uuid.uuid4())
-
-    @validator("timestamp", pre=True, always=True)
-    def default_timestamp(cls, value):
-        return value or datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-
-    class Config:
-        use_enum_values = True
-
-
-class MessageList:
-    messages: List[Message]
-
-    def __init__(
-        self,
-    ):
-        self.messages = []
-
-    def to_gpt(
-        self,
-    ):
-        temp_messages = []
-        for message in self.messages:
-            dict_message = message.dict()
-            dict_message.pop("id")
-            dict_message.pop("timestamp")
-            temp_messages.append(dict_message)
-
-        return temp_messages
 
 def create_initial_users(db: Session):
     if not User.exists(db):

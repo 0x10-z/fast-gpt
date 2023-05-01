@@ -1,6 +1,7 @@
 import { Globals } from "Globals";
 import { Message, Sender } from "components/Message";
 import { User } from "models/User";
+import { Auth } from "utils/auth";
 import { showErrorNotification } from "utils/utils";
 
 export class ApiService{
@@ -31,6 +32,7 @@ export class ApiService{
       switch(response.status){
         case 403:
           showErrorNotification("El API key que tienes asignado es invalido.");
+          Auth.removeToken();
           break;
         case 401:
           showErrorNotification("La cabecera con el API key es invalida.");
@@ -59,6 +61,7 @@ export class ApiService{
       switch(response.status){
         case 403:
           showErrorNotification("El API key que tienes asignado es invalido.");
+
           break;
         case 401:
           showErrorNotification("La cabecera con el API key es invalida.");
