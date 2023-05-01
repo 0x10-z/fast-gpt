@@ -15,8 +15,6 @@ function LoginForm({onLoginSuccess}: LoginProps) {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log("Username: ", username);
-    console.log("Password: ", password);
     const user = await apiService.login(username, password);
     if (user){
       onLoginSuccess(user)
@@ -34,7 +32,7 @@ function LoginForm({onLoginSuccess}: LoginProps) {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2" htmlFor="username">
-              Username
+              Usuario
             </label>
             <input
               autoFocus
