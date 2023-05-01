@@ -201,6 +201,9 @@ def create_initial_users(db: Session):
         User.create_user(
             db, username="linkedin", password="chatgpt", tokens_available=1000
         ),
+        User.create_user(
+            db, username="demo", password="demo", tokens_available=5000
+        ),
         print("Initial users created.")
     else:
         print("There are users in the database, initial users not created.")
