@@ -13,7 +13,6 @@ from models import User
 ## DB Fixtures
 args = dict(echo=True, connect_args={"check_same_thread": False}, poolclass=StaticPool)
 engine = create_engine("sqlite:///:memory:", **args)
-# engine = create_engine("sqlite:///./test.db", connect_args={"check_same_thread": False})
 
 
 def override_get_db():
