@@ -1,18 +1,20 @@
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy.pool import StaticPool
-import models
-from models import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
+
+import models
 from database import Base
-from main import app
 from dependencies import get_db
+from main import app
+from models import User
 
 ## DB Fixtures
 args = dict(echo=True, connect_args={"check_same_thread": False}, poolclass=StaticPool)
 engine = create_engine("sqlite:///:memory:", **args)
-#engine = create_engine("sqlite:///./test.db", connect_args={"check_same_thread": False})
+# engine = create_engine("sqlite:///./test.db", connect_args={"check_same_thread": False})
+
 
 def override_get_db():
     try:
@@ -21,17 +23,23 @@ def override_get_db():
     finally:
         db.close()
 
+
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base.metadata.create_all(bind=engine)
 app.dependency_overrides[get_db] = override_get_db
 
+
 def seed_database():
     db = next(override_get_db())
-    user=User(username="User 1", hashed_password="1234", api_key="1234", tokens_available=400)
+    user = User(
+        username="User 1", hashed_password="1234", api_key="1234", tokens_available=400
+    )
     db.add(user)
     db.commit()
 
+
 seed_database()
+
 
 # Client fixtures
 @pytest.fixture(scope="module")
@@ -52,7 +60,7 @@ def non_auth_client():
 def setup_database(connection):
     models.Base.metadata.bind = connection
     models.Base.metadata.create_all()
-    
+
     seed_database()
 
     yield

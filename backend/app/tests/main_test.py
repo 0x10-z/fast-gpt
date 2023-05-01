@@ -56,4 +56,7 @@ def test_200(client: client):
     assert json_response["last_response"] == "Mocked!!"
     assert json_response["success"] is True
     assert len(json_response["context"]) == 2
-    assert mocked_openai.completion().choices[0].message["content"] == json_response["context"][0]["content"]
+    assert (
+        mocked_openai.completion().choices[0].message["content"]
+        == json_response["context"][0]["content"]
+    )
