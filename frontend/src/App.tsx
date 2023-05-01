@@ -6,29 +6,30 @@ import ChatWindow from "./pages/ChatWindow";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
 import Sidebar from "./pages/Sidebar";
 import LoginForm from "components/Login";
+import { User } from "models/User";
 
 function App() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  const [user, setUser] = useState<User | null>(User.from_dict(localStorage.getItem('session_fast_gpt')));
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleLoginSuccess  = (token: string) => {
-    setToken(token);
-    localStorage.setItem('token', token);
+  const handleLoginSuccess  = (user: User) => {
+    setUser(user);
+    localStorage.setItem('session_fast_gpt', JSON.stringify(user.toDict()));
   };
 
   const handleLogout = () => {
-    setToken(null);
-    localStorage.removeItem('token');
+    setUser(null);
+    localStorage.removeItem('session_fast_gpt');
     setIsOpen(false);
   };
 
   return (
     <div className="app-container bg-gradient-to-t from-gray-900 to-gray-200">
-      { token && 
+      { user && 
         <button
           className="fixed z-20 top-4 right-4 p-2 rounded-full bg-gray-800 text-white"
           onClick={toggleNavbar}
@@ -40,12 +41,12 @@ function App() {
           )}
         </button>
       }
-      <Sidebar isOpen={isOpen} toggleNavbar={toggleNavbar} handleLogout={handleLogout} />
+      <Sidebar user={user!} isOpen={isOpen} toggleNavbar={toggleNavbar} handleLogout={handleLogout} />
       <div className={`app-content ${isOpen ? "ml-80 hidden md:block" : ""} `}>
         <div className="flex-1 max-w-screen-xl m-auto bg-white">
-          {token ? (
+          {user ? (
             <div className="w-chat-window">
-              <ChatWindow userToken={token}/>
+              <ChatWindow user={user}/>
             </div>
           ) : (
             <div className="w-chat-window">

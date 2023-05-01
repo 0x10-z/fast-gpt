@@ -5,6 +5,8 @@ import MessagesList from "components/MessagesList";
 import Footer from "components/Footer";
 import { Message, Sender } from "components/Message";
 import { ApiService } from "services/ApiService";
+import { User } from "models/User";
+
 const apiService = new ApiService();
 
 /* eslint-disable no-multi-str */
@@ -26,10 +28,10 @@ const defaultMessages = [
 ]
 
 interface ChatWindowProps {
-  userToken: string;
+  user: User;
 }
 
-function ChatWindow({ userToken }: ChatWindowProps ) {
+function ChatWindow({ user }: ChatWindowProps ) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
   
@@ -60,7 +62,7 @@ function ChatWindow({ userToken }: ChatWindowProps ) {
       setMessages((prevState) => [...prevState, userMessage]);
       const temporalAssistantMessage = Message.createMessage("#...", Sender.Assistant);
       setMessages((prevState) => [...prevState, temporalAssistantMessage]);
-      const assistantMessage = await apiService.chatGpt(message, userToken);
+      const assistantMessage = await apiService.chatGpt(message, user);
       addMessageToState(assistantMessage);
       setLoading(false);
     } catch (error: any) {

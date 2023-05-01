@@ -16,8 +16,8 @@ interface MessagesListProps {
 function MessagesList({ loading, messages, lastMessageRef }: MessagesListProps) {
   useEffect(() => {
     hljs.highlightAll();
-  }, []);
- 
+  }, [messages]);
+
   return (
     <div className="flex flex-col space-y-4 w-full" id="scroll-container">
       {messages.map((message, index) => (
@@ -50,7 +50,9 @@ function MessagesList({ loading, messages, lastMessageRef }: MessagesListProps) 
                 </div>
               ) : (
                 <div className="w-full mr-10">
-                  <ReactMarkdown children={message.content} />
+                  <ReactMarkdown
+                    className="text-sm md:text-base lg:text-base xl:text-base sm:max-w-[500px] md:max-w-[525px] lg:max-w-[550px] xl:max-w-[550px]"
+                    children={message.content} />
                 </div>
               )}
             </div>

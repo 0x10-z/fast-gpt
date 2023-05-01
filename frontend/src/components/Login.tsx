@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { ApiService } from "services/ApiService";
 import { showErrorNotification } from "utils/utils";
+import { User } from "models/User";
+
 const apiService = new ApiService();
 
 interface LoginProps {
-  onLoginSuccess: (token: string) => void;
+  onLoginSuccess: (user: User) => void;
 }
 
 function LoginForm({onLoginSuccess}: LoginProps) {
@@ -15,9 +17,9 @@ function LoginForm({onLoginSuccess}: LoginProps) {
     e.preventDefault();
     console.log("Username: ", username);
     console.log("Password: ", password);
-    const token = await apiService.login(username, password);
-    if (token){
-      onLoginSuccess(token)
+    const user = await apiService.login(username, password);
+    if (user){
+      onLoginSuccess(user)
     }else{
       showErrorNotification("El nombre de usuario o contraseña son incorrectos.")
     }

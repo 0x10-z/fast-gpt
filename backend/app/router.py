@@ -22,6 +22,7 @@ def login(credentials: Login, db: Session = Depends(get_db)):
         if user:
             response["success"] = True
             response["token"] = user.api_key
+            response["user"] = user
         else:
             response["error"] = "Credentials are incorrect"
     else:
@@ -38,7 +39,7 @@ class RequestMessage(BaseModel):
     message: str
 
 
-@router.post("/")
+@router.post("/chatgpt")
 def index(
     request_message: RequestMessage,
     openai: OpenAI = Depends(OpenAI),
@@ -51,12 +52,20 @@ def index(
         if success:
             response = process_message(openai, request_message.message, response)
             success = user.subtract_tokens(db, len(response["last_response"])/2.5)
+            response["user"] = user.to_sanitized_dict()
         else:
             response["error"] = "User {} has not enough available tokens.".format(user.username)
     else:
         response["error"] = "Message field is mandatory"
     return response
 
+@router.post("/reset")
+def reset(
+    user: User = Depends(get_api_key),
+    db: Session = Depends(get_db)
+):
+    response = {"success": user.reset_session(db)}
+    return response
 
 def process_message(openai, message, response):
     try:

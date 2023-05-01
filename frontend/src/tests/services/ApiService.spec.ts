@@ -2,7 +2,15 @@
 import { ApiService } from 'services/ApiService';
 import { Message, Sender } from 'components/Message';
 import fetch from "jest-fetch-mock";
+import { User } from 'models/User';
 
+const mockUser = User.from_dict({
+  id: 1,
+  api_key: "1234",
+  created_at: "2022-12-12",
+  username: "mockUser",
+  tokens_available: 1000
+});
 
 describe('ApiService', () => {
   beforeEach(() => {
@@ -33,7 +41,7 @@ describe('ApiService', () => {
 
       // sut
       const sut = new ApiService();
-      const message = await sut.chatGpt(input, "mockedToken");
+      const message = await sut.chatGpt(input, mockUser!);
   
       // assert
       expect(message).toBeInstanceOf(Message);
@@ -53,7 +61,7 @@ describe('ApiService', () => {
     const sut = new ApiService();
 
     // assert
-    await expect(sut.chatGpt('Hello', "mockedToken")).rejects.toThrow(
+    await expect(sut.chatGpt('Hello', mockUser!)).rejects.toThrow(
       'Error sending message: 404 Not Found'
     );
   });
@@ -66,7 +74,7 @@ describe('ApiService', () => {
     const sut = new ApiService();
 
     // assert
-    await expect(sut.chatGpt('Hello', "mockedToken")).rejects.toThrow(
+    await expect(sut.chatGpt('Hello', mockUser!)).rejects.toThrow(
       'Something went wrong'
     );
   });

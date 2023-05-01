@@ -26,11 +26,22 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     last_login_at = Column(DateTime, default=None)
 
+    def reset_session(self, db: Session):
+        pass
+    
+    def to_sanitized_dict(self):
+        return {
+            "id": self.id,
+            "api_key": self.api_key,
+            "created_at": self.created_at,
+            "username": self.username,
+            "tokens_available": self.tokens_available
+        }
     def subtract_tokens(self, db: Session, message_length):
         success = False
         if self.tokens_available > message_length:
             success = True
-            self.tokens_available -= message_length
+            self.tokens_available = round(self.tokens_available - message_length, 2)
             self.last_used_at = datetime.now()
             db.commit()
         return success
