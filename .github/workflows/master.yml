@@ -14,9 +14,7 @@ jobs:
       docker:
         image: docker:23.0-dind
     steps:
-      - uses: actions/checkout@v3
-      - uses: isbang/compose-action@v1.4.1
-      
+      - uses: actions/checkout@v3      
       - name: Prepare env files
         run: |
           echo -n "OPEN_API_KEY=MY_FAKE_APIKEY" > backend/.env
