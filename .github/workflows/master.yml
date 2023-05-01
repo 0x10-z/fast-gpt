@@ -44,7 +44,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build and push Docker Compose
-        uses: docker/compose-action@v2
+        uses: isbang/compose-action@v1.4.1
         with:
           compose-file: docker-compose.yml
           context: .
