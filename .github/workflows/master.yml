@@ -15,23 +15,41 @@ jobs:
         image: docker:23.0-dind
     steps:
       - uses: actions/checkout@v3
+      
       - name: Prepare env files
         run: |
           echo -n "OPEN_API_KEY=MY_FAKE_APIKEY" > backend/.env
           echo -n "MAX_TOKENS=1000" >> backend/.env
           echo -n "CORS_ORIGINS=http://localhost:3000" >> backend/.env
           echo -n "REACT_APP_API_URL=http://localhost:5000/" > frontend/.env
+      
       - name: Build the Docker image
         run: |
           docker-compose -f docker-compose.ci.yml build front-fast-gpt
+      
       - name: Test frontend container
         run: |
           docker-compose -f docker-compose.ci.yml run --rm front-fast-gpt npm run test:coverage
+      
       - name: Upload frontend coverage
         uses: actions/upload-artifact@v3
         with:
           name: Frontend coverage
           path: frontend_coverage
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push Docker Compose
+        uses: docker/compose-action@v2
+        with:
+          compose-file: docker-compose.yml
+          context: .
+          push: true
+          tags: |
+            iocio005/fast-gpt:latest
   backend:
     runs-on: ubuntu-latest
     services:
