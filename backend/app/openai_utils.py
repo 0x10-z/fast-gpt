@@ -4,8 +4,10 @@ import time
 import openai
 from fastapi import Depends
 from sqlalchemy.orm import Session
+
 from dependencies import get_db
 from models import User
+
 
 class OpenAIWrapper:
     def __init__(
@@ -26,7 +28,11 @@ class OpenAIWrapper:
 
 
 class OpenAI:
-    def __init__(self, openai_wrapper: OpenAIWrapper = Depends(OpenAIWrapper), db: Session = Depends(get_db)):
+    def __init__(
+        self,
+        openai_wrapper: OpenAIWrapper = Depends(OpenAIWrapper),
+        db: Session = Depends(get_db),
+    ):
         self.openai_wrapper = openai_wrapper
         self.db = db
 
@@ -39,7 +45,9 @@ class OpenAI:
             end = time.time()
             print("Response received after {} seconds.".format(end - start))
             if openai_response:
-                user.assistant_write(self.db, openai_response.choices[0].message["content"])
+                user.assistant_write(
+                    self.db, openai_response.choices[0].message["content"]
+                )
             else:
                 raise Exception("OpenAI maximum retries exceeded. Please try again.")
 

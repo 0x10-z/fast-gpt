@@ -6,8 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from database import Base, SessionLocal, engine
-from router import router
 from models import create_initial_users
+from router import router
 
 app = FastAPI()
 

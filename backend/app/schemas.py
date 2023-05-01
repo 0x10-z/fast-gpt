@@ -1,8 +1,10 @@
-from pydantic import BaseModel, validator
-from typing import List, Optional
 import uuid
 from datetime import datetime
 from enum import Enum
+from typing import Optional
+
+from pydantic import BaseModel, validator
+
 
 class Role(str, Enum):
     ASSISTANT = "assistant"

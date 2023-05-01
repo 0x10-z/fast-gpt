@@ -16,12 +16,12 @@ def test_405_method_not_allowed(client: client):
 
 
 def test_require_header_missing(non_auth_client: non_auth_client):
-    response = non_auth_client.post("/")
+    response = non_auth_client.post("/chatgpt")
     assert response.status_code == 401
 
 
 def test_422_field_required(client: client):
-    response = client.post("/")
+    response = client.post("/chatgpt")
     assert response.status_code == 422
     assert response.json() == {
         "detail": [
@@ -50,10 +50,10 @@ def test_200(client: client):
     mocked_openai = MockOpenAI()
     app.dependency_overrides[OpenAIWrapper] = MockOpenAI
 
-    response = client.post("/", json={"message": "Mocked!!"})
+    response = client.post("/chatgpt", json={"message": "Mocked!!"})
     json_response = response.json()
     assert response.status_code == 200
     assert json_response["last_response"] == "Mocked!!"
     assert json_response["success"] is True
     assert len(json_response["context"]) == 2
-    assert mocked_openai.completion().choices[0].message in json_response["context"]
+    assert mocked_openai.completion().choices[0].message["content"] == json_response["context"][0]["content"]

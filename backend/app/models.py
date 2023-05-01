@@ -1,14 +1,16 @@
+import binascii
+import enum
+import hashlib
+import os
 import uuid
 from datetime import datetime
-import os
-import enum
-from sqlalchemy import Column, Integer, String, DateTime, func, ForeignKey
+
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.orm import Session, relationship
 from sqlalchemy.types import Enum
-import hashlib
+
 from database import Base
-import binascii
-import json
+
 
 def generate_uuid():
     return str(uuid.uuid4())
@@ -18,6 +20,7 @@ class Role(enum.Enum):
     ASSISTANT = 1
     USER = 2
 
+
 class Message(Base):
     __tablename__ = "messages"
 
@@ -26,7 +29,7 @@ class Message(Base):
     role = Column(Enum(Role))
     content = Column(String)
     timestamp = Column(DateTime, default=datetime.utcnow())
-    #user = relationship("User", back_populates="messages")
+    # user = relationship("User", back_populates="messages")
 
     def __init__(
         self,
@@ -37,7 +40,7 @@ class Message(Base):
         self.role = role
         self.content = content
         self.timestamp = timestamp or datetime.utcnow()
-        
+
 
 class User(Base):
     __tablename__ = "users"
@@ -52,26 +55,32 @@ class User(Base):
 
     messages = relationship("Message", backref="user")
 
-    def messages_2_dict(self,):
+    def messages_2_dict(
+        self,
+    ):
         messages_dict = []
         for message in self.messages:
             message_dict = {
                 "id": message.id,
                 "role": "user" if message.role == Role.USER else "assistant",
                 "content": message.content,
-                "timestamp": message.timestamp.strftime("%m/%d/%Y, %H:%M:%S")
+                "timestamp": message.timestamp.strftime("%m/%d/%Y, %H:%M:%S"),
             }
             messages_dict.append(message_dict)
 
         return messages_dict
 
-    def messages_to_gpt(self,):
+    def messages_to_gpt(
+        self,
+    ):
         temp_messages = []
         for message in self.messages:
-            temp_messages.append({
-                "content": message.content,
-                "role": "user" if message.role == Role.USER else "assistant"
-            })
+            temp_messages.append(
+                {
+                    "content": message.content,
+                    "role": "user" if message.role == Role.USER else "assistant",
+                }
+            )
 
         return temp_messages
 
@@ -125,8 +134,9 @@ class User(Base):
             "api_key": self.api_key,
             "created_at": self.created_at,
             "username": self.username,
-            "tokens_available": self.tokens_available
+            "tokens_available": self.tokens_available,
         }
+
     def subtract_tokens(self, db: Session, message_length):
         success = False
         if self.tokens_available > message_length:
@@ -154,11 +164,16 @@ class User(Base):
     @staticmethod
     def create_user(db: Session, username: str, password: str, tokens_available: int):
         hashed_password = get_password_hash(password)
-        user = User(username=username, hashed_password=hashed_password, tokens_available=tokens_available)
+        user = User(
+            username=username,
+            hashed_password=hashed_password,
+            tokens_available=tokens_available,
+        )
         db.add(user)
         db.commit()
         db.refresh(user)
         return user
+
 
 def get_password_hash(password: str) -> str:
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode("ascii")
@@ -166,17 +181,25 @@ def get_password_hash(password: str) -> str:
     pwdhash = binascii.hexlify(pwdhash)
     return (salt + pwdhash).decode("ascii")
 
+
 def verify_password(password: str, hashed_password: str) -> bool:
     salt = hashed_password[:64]
     stored_password = hashed_password[64:]
-    pwdhash = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt.encode("ascii"), 100000)
+    pwdhash = hashlib.pbkdf2_hmac(
+        "sha256", password.encode("utf-8"), salt.encode("ascii"), 100000
+    )
     pwdhash = binascii.hexlify(pwdhash).decode("ascii")
     return pwdhash == stored_password
 
+
 def create_initial_users(db: Session):
     if not User.exists(db):
-        User.create_user(db, username="user", password="user", tokens_available=1000000),
-        User.create_user(db, username="linkedin", password="chatgpt", tokens_available=1000),
+        User.create_user(
+            db, username="user", password="user", tokens_available=1000000
+        ),
+        User.create_user(
+            db, username="linkedin", password="chatgpt", tokens_available=1000
+        ),
         print("Initial users created.")
     else:
         print("There are users in the database, initial users not created.")

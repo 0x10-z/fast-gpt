@@ -27,6 +27,11 @@ docker-compose run --rm back-fast-gpt isort .
 docker-compose run --rm back-fast-gpt black .
 docker-compose run --rm back-fast-gpt pytest -vv
 docker-compose run --rm back-fast-gpt pytest --cov=. --cov-report html
+
+# Pytest debugging
+# Use "python -m debugpy --listen 0.0.0.0:5678 -m pytest --debug" command in compose
+docker-compose -f docker-compose.debug.py up
+# then, launch Remote attachment
 ```
 
 # Frontend commands
