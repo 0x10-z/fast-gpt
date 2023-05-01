@@ -12,6 +12,35 @@ const mockUser = User.from_dict({
   tokens_available: 1000
 });
 
+const mockData = {
+  ok: true,
+  success: true,
+  context: [
+    {
+      id: '46f59ebc-5472-46c2-be88-8af0a1cd3b21',
+      role: 'user',
+      content: 'hola que tal',
+      timestamp: '2023/04/29 12:21:18',
+    },
+    {
+      id: '4ff51077-cb9b-4356-9ae6-61f485f220c5',
+      role: 'assistant',
+      content:
+        '¡Hola! Estoy aquí para ayudarte en lo que necesites. ¿En qué puedo ayudarte hoy?',
+      timestamp: '2023/04/29 12:21:20',
+    },
+  ],
+  last_response:
+    '¡Hola! Estoy aquí para ayudarte en lo que necesites. ¿En qué puedo ayudarte hoy?',
+  user:{
+    "id": 1,
+    "api_key": "0f7fed0c-9d34-42b5-8f03-b942b6bf605d",
+    "created_at": "2023-05-01T02:43:44.941322",
+    "username": "user",
+    "tokens_available": 998498.4
+  }
+};
+
 describe('ApiService', () => {
   beforeEach(() => {
     fetch.resetMocks();
@@ -38,6 +67,10 @@ describe('ApiService', () => {
       console.log("Test case: " + name);
       mockData.last_response = expectedOutput;
       fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 });
+      const expectedHeaders = new Headers({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${mockUser?.api_key}`,
+      });
 
       // sut
       const sut = new ApiService();
@@ -48,7 +81,7 @@ describe('ApiService', () => {
       expect(message.content).toBe(expectedOutput);
       expect(message.sender).toBe(Sender.Assistant);
       expect(fetch).toHaveBeenCalledWith(
-        "http://localhost:5000/", {"body": "{\"message\":\""+input+"\"}", "headers": {"Content-Type": "application/json"}, "method": "POST"}
+        "http://localhost:5000/chatgpt", {"body": "{\"message\":\""+input+"\"}", "headers": expectedHeaders, "method": "POST"}
       );
     });
   })
@@ -81,24 +114,3 @@ describe('ApiService', () => {
 
 });
 
-const mockData = {
-  ok: true,
-  success: true,
-  context: [
-    {
-      id: '46f59ebc-5472-46c2-be88-8af0a1cd3b21',
-      role: 'user',
-      content: 'hola que tal',
-      timestamp: '2023/04/29 12:21:18',
-    },
-    {
-      id: '4ff51077-cb9b-4356-9ae6-61f485f220c5',
-      role: 'assistant',
-      content:
-        '¡Hola! Estoy aquí para ayudarte en lo que necesites. ¿En qué puedo ayudarte hoy?',
-      timestamp: '2023/04/29 12:21:20',
-    },
-  ],
-  last_response:
-    '¡Hola! Estoy aquí para ayudarte en lo que necesites. ¿En qué puedo ayudarte hoy?',
-};

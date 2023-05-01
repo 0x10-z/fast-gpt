@@ -37,7 +37,7 @@ docker-compose -f docker-compose.debug.py up
 # Frontend commands
 
 ```bash
-docker-compose run --rm front-fast-gpt npm test
+docker-compose run --rm front-fast-gpt npm run test:ci
 docker-compose run --rm front-fast-gpt npm run build
 docker-compose run --rm front-fast-gpt npm run test:coverage
 ```

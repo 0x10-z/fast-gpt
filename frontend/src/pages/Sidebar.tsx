@@ -29,7 +29,7 @@ function Sidebar({ user, isOpen, toggleNavbar, handleLogout }: SidebarProps) {
         >
   <div className="fixed h-screen w-80 flex flex-col bg-gray-900 text-gray-100 shadow-lg">
     <div className="flex items-center justify-between px-4 py-3">
-      <h1 className="text-2xl font-bold">Hola {user.username}!</h1>
+      <h1 className="text-2xl font-bold" data-testid="sidebar-username">Hola {user.username}!</h1>
       <button onClick={toggleNavbar} className="text-gray-400 hover:text-white focus:outline-none">
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
