@@ -17,8 +17,11 @@ def generate_uuid():
 
 
 class Role(enum.Enum):
-    ASSISTANT = 1
-    USER = 2
+    ASSISTANT = "assistant"
+    USER = "user"
+
+    def __str__(self):
+        return str(self.value)
 
 
 class Message(Base):
@@ -62,7 +65,7 @@ class User(Base):
         for message in self.messages:
             message_dict = {
                 "id": message.id,
-                "role": "user" if message.role == Role.USER else "assistant",
+                "role": str(message.role),
                 "content": message.content,
                 "timestamp": message.timestamp.strftime("%m/%d/%Y, %H:%M:%S"),
             }
@@ -76,10 +79,7 @@ class User(Base):
         temp_messages = []
         for message in self.messages:
             temp_messages.append(
-                {
-                    "content": message.content,
-                    "role": "user" if message.role == Role.USER else "assistant",
-                }
+                {"content": message.content, "role": str(message.role)}
             )
 
         return temp_messages
@@ -135,6 +135,7 @@ class User(Base):
             "created_at": self.created_at,
             "username": self.username,
             "tokens_available": self.tokens_available,
+            "messages": self.messages,
         }
 
     def subtract_tokens(self, db: Session, message_length):

@@ -25,8 +25,7 @@ def login(credentials: Login, db: Session = Depends(get_db)):
         if user:
             response["success"] = True
             response["token"] = user.api_key
-            response["user"] = user
-            response["context"] = user.messages_2_dict()
+            response["user"] = user.to_sanitized_dict()
         else:
             response["error"] = "Credentials are incorrect"
     else:

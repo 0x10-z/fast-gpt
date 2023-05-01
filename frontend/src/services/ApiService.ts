@@ -1,5 +1,5 @@
 import { Globals } from "Globals";
-import { Message, Sender } from "components/Message";
+import { Message, Sender } from "models/Message";
 import { User } from "models/User";
 import { Auth } from "utils/auth";
 import { showErrorNotification } from "utils/utils";
@@ -23,6 +23,8 @@ export class ApiService{
       const data = await response.json();
       if (data.success) {
         user.tokens_available = data.user.tokens_available;
+        user.messages = data.user.messages;
+        Auth.setToken(JSON.stringify(user!.toDict()))
         return Message.createMessage(data.last_response, Sender.Assistant);
       } else {
         showErrorNotification("El backend parece no estar funcionando...");

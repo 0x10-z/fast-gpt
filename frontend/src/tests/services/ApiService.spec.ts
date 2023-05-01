@@ -1,15 +1,16 @@
 
 import { ApiService } from 'services/ApiService';
-import { Message, Sender } from 'components/Message';
+import { Message, Sender } from 'models/Message';
 import fetch from "jest-fetch-mock";
 import { User } from 'models/User';
 
 const mockUser = User.from_dict({
   id: 1,
   api_key: "1234",
-  created_at: "2022-12-12",
+  created_at: new Date("2022-12-12"),
   username: "mockUser",
-  tokens_available: 1000
+  tokens_available: 1000,
+  messages: []
 });
 
 const mockData = {
@@ -79,7 +80,7 @@ describe('ApiService', () => {
       // assert
       expect(message).toBeInstanceOf(Message);
       expect(message.content).toBe(expectedOutput);
-      expect(message.sender).toBe(Sender.Assistant);
+      expect(message.role).toBe(Sender.Assistant);
       expect(fetch).toHaveBeenCalledWith(
         "http://localhost:5000/chatgpt", {"body": "{\"message\":\""+input+"\"}", "headers": expectedHeaders, "method": "POST"}
       );

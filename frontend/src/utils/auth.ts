@@ -1,8 +1,15 @@
+import { UserProps } from "models/User";
+
 export class Auth {
   static storageKey = "session_fast_gpt";
 
-  static getToken() {
-    return localStorage.getItem(this.storageKey);
+  static getToken(): UserProps |null {
+    const item = localStorage.getItem(this.storageKey);
+    if (item){
+      return JSON.parse(item);
+    }else{
+      return null;
+    }
   }
 
   static setToken(token: string) {

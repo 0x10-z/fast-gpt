@@ -1,14 +1,13 @@
-import { render, screen } from '@testing-library/react';
-import Sidebar from 'pages/Sidebar';
 import { User } from 'models/User';
 import fetch from "jest-fetch-mock";
 
 const mockUser = User.from_dict({
   id: 1,
   api_key: "1234",
-  created_at: "2022-12-12",
+  created_at: new Date("2022-12-12"),
   username: "mockUser",
-  tokens_available: 1000
+  tokens_available: 1000,
+  messages: []
 });
 
 const mockData = {

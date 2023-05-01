@@ -8,6 +8,9 @@ import Sidebar from "./pages/Sidebar";
 import LoginForm from "components/Login";
 import { User } from "models/User";
 import { Auth } from "utils/auth";
+import { ApiService } from "services/ApiService";
+
+const apiService = new ApiService();
 
 function App() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -20,6 +23,14 @@ function App() {
   const handleLoginSuccess  = (user: User) => {
     setUser(user);
     Auth.setToken(JSON.stringify(user.toDict()))
+  };
+
+  const handleResetSession = () => {
+    apiService.resetSession(user!);
+    user!.resetSession();
+    setUser(user);
+    Auth.setToken(JSON.stringify(user!.toDict()))
+    window.location.reload();
   };
 
   const handleLogout = () => {
@@ -42,7 +53,7 @@ function App() {
           )}
         </button>
       }
-      <Sidebar user={user!} isOpen={isOpen} toggleNavbar={toggleNavbar} handleLogout={handleLogout} />
+      <Sidebar user={user!} isOpen={isOpen} toggleNavbar={toggleNavbar} handleLogout={handleLogout} handleResetSession={handleResetSession} />
       <div className={`app-content ${isOpen ? "ml-80 hidden md:block" : ""} `}>
         <div className="flex-1 max-w-screen-xl m-auto bg-white">
           {user ? (

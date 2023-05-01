@@ -1,4 +1,4 @@
-import { Message } from "./Message";
+import { Message } from "models/Message";
 import ReactMarkdown from 'react-markdown';
 import hljs from 'highlight.js';
 import { useEffect } from "react";
@@ -20,11 +20,11 @@ function MessagesList({ loading, messages, lastMessageRef }: MessagesListProps) 
 
   return (
     <div className="flex flex-col space-y-4 w-full" id="scroll-container">
-      {messages.map((message, index) => (
+      {messages && messages.map((message, index) => (
         <div
           key={index}
           className={`${
-            message.sender === "user" ? "user bg-gray-200" : "assistant"
+            message.role === "user" ? "user bg-gray-200" : "assistant"
           }`}
         >
           <div
@@ -35,9 +35,9 @@ function MessagesList({ loading, messages, lastMessageRef }: MessagesListProps) 
               <img
                 className="ring-2 ring-black w-full object-cover"
                 alt={
-                  message.sender === "user" ? "user avatar" : "chatgpt avatar"
+                  message.role === "user" ? "user avatar" : "chatgpt avatar"
                 }
-                src={message.sender === "user" ? "user.png" : "chatgpt.png"}
+                src={message.role === "user" ? "user.png" : "chatgpt.png"}
               />
             </div>
             <div

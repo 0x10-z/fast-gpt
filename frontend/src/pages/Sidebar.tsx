@@ -1,22 +1,17 @@
 import SidebarFooter from "components/SidebarFooter";
 import { motion, AnimatePresence } from "framer-motion";
 import { User } from "models/User";
-import { ApiService } from "services/ApiService";
-
-const apiService = new ApiService();
 
 interface SidebarProps {
   user: User;
   isOpen: boolean;
   toggleNavbar: () => void;
   handleLogout: () => void;
+  handleResetSession: () => void;
 }
 
-function Sidebar({ user, isOpen, toggleNavbar, handleLogout }: SidebarProps) {
-  const handleResetSession = () => {
-    apiService.resetSession(user);
-  };
-
+function Sidebar({ user, isOpen, toggleNavbar, handleLogout, handleResetSession }: SidebarProps) {
+  
   return (
     <AnimatePresence>
       {isOpen && (
