@@ -107,7 +107,7 @@ jobs:
           wget https://github.com/aquasecurity/trivy/releases/download/v0.41.0/trivy_0.41.0_Linux-64bit.deb
           sudo apt install -y ./trivy_0.41.0_Linux-64bit.deb
 
-      - name: Scan Docker image for vulnerabilities
+      - name: Scan Docker images for vulnerabilities
         run: |
           trivy image --ignore-unfixed --severity HIGH iocio005/back-fast-gpt-prod:latest
           trivy image --ignore-unfixed --severity HIGH iocio005/front-fast-gpt-prod:latest
@@ -121,4 +121,4 @@ jobs:
 
       - name: Deploy code
         run: |
-          ssh -o StrictHostKeyChecking=no azureuser@20.124.2.0 "./deploy.sh"
+          ssh azureuser@20.124.2.0 "./deploy.sh"
