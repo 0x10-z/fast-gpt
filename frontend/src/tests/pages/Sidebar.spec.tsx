@@ -1,18 +1,18 @@
-import { User } from 'models/User';
+// import { User } from 'models/User';
 import fetch from "jest-fetch-mock";
 
-const mockUser = User.from_dict({
-  id: 1,
-  api_key: "1234",
-  created_at: new Date("2022-12-12"),
-  username: "mockUser",
-  tokens_available: 1000,
-  messages: []
-});
+// const mockUser = User.from_dict({
+//   id: 1,
+//   api_key: "1234",
+//   created_at: new Date("2022-12-12"),
+//   username: "mockUser",
+//   tokens_available: 1000,
+//   messages: []
+// });
 
-const mockData = {
-  version: "1.0.0"
-};
+// const mockData = {
+//   version: "1.0.0"
+// };
 
 describe('Sidebar', () => {
   beforeEach(() => {

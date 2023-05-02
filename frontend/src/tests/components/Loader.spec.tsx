@@ -1,11 +1,11 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Loader from 'components/Loader';
 
 describe('Loader', () => {
   test('should render the Loader component', () => {
-    const { getByText } = render(<Loader />);
+    render(<Loader />);
 
-    const spinner = getByText('Dejame pensar...');
+    const spinner = screen.getByText('Dejame pensar...');
     expect(spinner).toBeInTheDocument();
   });
 });

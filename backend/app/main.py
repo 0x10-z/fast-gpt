@@ -13,9 +13,7 @@ app = FastAPI()
 
 app.include_router(router)
 
-origins = [
-    os.getenv("CORS_ORIGINS"),
-]
+origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
 
 print("ORIGINS: {}".format(origins))
 

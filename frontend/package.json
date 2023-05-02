@@ -39,7 +39,9 @@
     "test:ci": "react-scripts test --watchAll=false",
     "test:coverage": "react-scripts test --watchAll=false --coverage .",
     "eject": "react-scripts eject",
-    "build:css": "postcss src/tailwind.css -o src/index.css"
+    "build:css": "postcss src/tailwind.css -o src/index.css",
+    "lint": "eslint --ignore-path .gitignore .",
+		"lint:fix": "eslint --fix --ignore-path .gitignore ."
   },
   "eslintConfig": {
     "extends": [

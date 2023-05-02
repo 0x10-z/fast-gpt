@@ -12,12 +12,22 @@ RUN npm install -D postcss-cli --silent
 
 COPY . .
 
-RUN npm run test:ci
+# OVERWRITE ENV VARIABLE
+RUN echo -n "REACT_APP_API_URL=http://20.124.2.0:5000/\n" > .env
+
+RUN npm run lint:fix
 RUN npm run build
 RUN npm run build:css
 
 # production environment
 FROM nginx:stable-alpine
+
+# self-signed-certs
+COPY nginx/docker-cert-entrypoint.sh /
+RUN chmod +x /docker-cert-entrypoint.sh && /docker-cert-entrypoint.sh
+
+COPY nginx/nginx.conf /etc/nginx/conf.d/nginx.conf
+
 COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]

@@ -95,3 +95,17 @@ jobs:
         run: |
           docker-compose -f docker-compose.prod.yml build
           docker-compose -f docker-compose.prod.yml push
+      - name: Update remote server compose image
+        run: |
+          docker-compose -f docker-compose.prod.yml build
+          docker-compose -f docker-compose.prod.yml push
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AZURE_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan 20.124.2.0 >> ~/.ssh/known_hosts
+
+      - name: Deploy code
+        run: |
+          ssh azureuser@20.124.2.0 "./deploy.sh"

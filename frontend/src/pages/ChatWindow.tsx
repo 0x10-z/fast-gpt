@@ -34,7 +34,6 @@ interface ChatWindowProps {
 function ChatWindow({ user }: ChatWindowProps ) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
-  console.log("Loading messages..." + user.messages)
   const [messages, setMessages] = useState<Message[]>(user.messages);
   const [loading, setLoading] = useState<boolean>(false);
 

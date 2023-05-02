@@ -16,7 +16,7 @@ class OpenAIWrapper:
         self.openai = openai
         self.openai.organization = "org-keCQjcMENEnF0JDMPkPFs9YC"
         self.openai.api_key = os.getenv("OPENAI_API_KEY")
-        self.max_tokens = int(os.getenv("MAX_TOKENS", 1000))
+        self.max_tokens = int(os.getenv("MAX_TOKENS", 100))
 
     def completion(self, messages):
         return openai.ChatCompletion.create(

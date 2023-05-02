@@ -6,15 +6,13 @@ services:
     ports:
       - "5000:80"
     environment:
-      - OPENAI_API_KEY=<your_apikey>
+      - OPENAI_API_KEY=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
       - MAX_TOKENS=1000
-      - CORS_ORIGINS=http://localhost
+      - ALLOWED_ORIGINS=http://localhost:3000,https://localhost:8443
   front-fast-gpt-prod:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
     image: iocio005/front-fast-gpt-prod:latest
     ports:
-      - "8080:80"
-    environment:
-      - REACT_APP_API_URL="http://localhost:5000/"
+      - "8443:443"

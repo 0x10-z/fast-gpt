@@ -13,7 +13,7 @@
 ```bash
 echo "OPEN_API_KEY=<apikey>" > backend/.env
 echo "MAX_TOKENS=1000" >> backend/.env
-echo "CORS_ORIGINS=http://localhost:3000" >> backend/.env
+echo "ALLOWED_ORIGINS=http://localhost:3000" >> backend/.env
 echo -n "REACT_APP_API_URL=http://localhost:5000/\n" > frontend/.env
 cd frontend && npm install && cd ..
 docker-compose up
