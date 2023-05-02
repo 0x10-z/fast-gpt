@@ -6,7 +6,7 @@ services:
     ports:
       - "5000:80"
     environment:
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=<you api key here>
       - MAX_TOKENS=1000
       - ALLOWED_ORIGINS=http://localhost:3000,https://localhost:8443
   front-fast-gpt-prod:

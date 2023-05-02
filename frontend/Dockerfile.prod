@@ -13,7 +13,7 @@ RUN npm install -D postcss-cli --silent
 COPY . .
 
 # OVERWRITE ENV VARIABLE
-RUN echo "REACT_APP_API_URL=http://20.124.2.0:5000/" > .env
+RUN echo "REACT_APP_API_URL=https://chat-backend.ikerocio.com/" > .env
 
 RUN npm run lint:fix
 RUN npm run build

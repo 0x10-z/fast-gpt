@@ -7,7 +7,12 @@
 ![](https://img.shields.io/badge/Node-React-blue)
 ![](https://img.shields.io/badge/Linters-Black%20Isort%20ruff-black)
 
-
+# TODO
+1. Al inicio, se llama a un index.css que da 404 al menos en las versiones de produccion
+2. En la version movil, el input se oculta por la barra de la app de chrome (solo se ve con el movil)
+3. hacer un esquema de como funciona el despleado
+  3.1. el uisuario llama a nginxproxy manager poir https -> llama a azure por http
+  3.2. el frontend del usuario, llama a nginx proxy manager para pedir los recursos del backend por https que a su vez, llama a azure por http
 # Quick guide
 
 ```bash
