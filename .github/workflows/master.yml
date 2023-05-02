@@ -99,6 +99,16 @@ jobs:
         run: |
           docker-compose -f docker-compose.prod.yml build
           docker-compose -f docker-compose.prod.yml push
+
+      - name: Install Trivy
+        run: |
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.19.1/trivy_0.19.1_Linux-64bit.deb
+          sudo apt install -y ./trivy_0.19.1_Linux-64bit.deb
+      - name: Scan Docker image for vulnerabilities
+        run: |
+          trivy --exit-code 1 --severity HIGH,MEDIUM iocio005/back-fast-gpt-prod:latest
+          trivy --exit-code 1 --severity HIGH,MEDIUM iocio005/prod-fast-gpt-prod:latest
+
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
