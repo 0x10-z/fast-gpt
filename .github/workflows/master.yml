@@ -107,7 +107,7 @@ jobs:
       - name: Scan Docker image for vulnerabilities
         run: |
           trivy image --ignore-unfixed --severity HIGH iocio005/back-fast-gpt-prod:latest
-          trivy image --ignore-unfixed --severity HIGH iocio005/prod-fast-gpt-prod:latest
+          trivy image --ignore-unfixed --severity HIGH iocio005/front-fast-gpt-prod:latest
 
       - name: Configure SSH
         run: |
