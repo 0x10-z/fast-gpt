@@ -117,7 +117,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.AZURE_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan 20.124.2.0 > ~/.ssh/known_hosts
+          ssh-keyscan 20.124.2.0 >> ~/.ssh/known_hosts
 
       - name: Deploy code
         run: |
