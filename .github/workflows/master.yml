@@ -91,10 +91,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+          
       - name: Build and push Docker Compose
         run: |
           docker-compose -f docker-compose.prod.yml build
           docker-compose -f docker-compose.prod.yml push
+
       - name: Update remote server compose image
         run: |
           docker-compose -f docker-compose.prod.yml build
@@ -104,6 +106,7 @@ jobs:
         run: |
           wget https://github.com/aquasecurity/trivy/releases/download/v0.41.0/trivy_0.41.0_Linux-64bit.deb
           sudo apt install -y ./trivy_0.41.0_Linux-64bit.deb
+
       - name: Scan Docker image for vulnerabilities
         run: |
           trivy image --ignore-unfixed --severity HIGH iocio005/back-fast-gpt-prod:latest
