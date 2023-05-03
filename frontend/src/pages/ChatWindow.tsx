@@ -66,7 +66,7 @@ function ChatWindow({ user }: ChatWindowProps ) {
       <div className="flex flex-col flex-grow overflow-y-auto">
         <MessagesList loading={loading} lastMessageRef={lastMessageRef} messages={messages} />
       </div>
-      <div className="mt-auto">
+      <div className="mt-auto py-2">
         <ChatInput onSendMessage={sendMessage} inputRef={inputRef} />
         <Footer />
       </div>

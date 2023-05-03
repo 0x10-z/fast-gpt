@@ -20,7 +20,7 @@ def login(credentials: Login, db: Session = Depends(get_db)):
     response = {"success": False}
     if credentials:
         user = User.authenticate(
-            db, username=credentials.username, password=credentials.password
+            db, username=credentials.username.lower(), password=credentials.password
         )
         if user:
             response["success"] = True

@@ -14,7 +14,7 @@ const Footer = () => {
     fetchBackendVersion();
   }, []);
   return (
-    <div className="px-3 pt-2 pb-3 text-center text-xs text-gray-600 dark:text-gray-300 md:px-4 md:pt-3 md:pb-6">
+    <div className="px-3 pt-2 pb-3 text-center text-xs text-gray-600 md:px-4 md:pt-3 md:pb-6">
       <span>
         Cliente {" "}
         <a

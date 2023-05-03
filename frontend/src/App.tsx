@@ -40,7 +40,7 @@ function App() {
   };
 
   return (
-    <div className="app-container bg-gradient-to-t from-gray-900 to-gray-200">
+    <div className="app-container text-gray-800 bg-gradient-to-t from-gray-900 to-gray-200">
       { user && 
         <button
           className="fixed z-20 top-4 right-4 p-2 rounded-full bg-gray-800 text-white"
