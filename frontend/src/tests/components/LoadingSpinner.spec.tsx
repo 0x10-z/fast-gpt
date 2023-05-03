@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import Loader from 'components/Loader';
+import LoadingSpinner from 'components/LoadingSpinner';
 
-describe('Loader', () => {
+describe('LoadingSpinner', () => {
   test('should render the Loader component', () => {
-    render(<Loader />);
+    render(<LoadingSpinner />);
 
     const spinner = screen.getByText('Dejame pensar...');
     expect(spinner).toBeInTheDocument();

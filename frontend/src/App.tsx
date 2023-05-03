@@ -5,7 +5,7 @@ import { useState } from "react";
 import ChatWindow from "./pages/ChatWindow";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
 import Sidebar from "./pages/Sidebar";
-import LoginForm from "components/Login";
+import LoginForm from "./pages/Login";
 import { User } from "models/User";
 import { Auth } from "utils/auth";
 import { ApiService } from "services/ApiService";

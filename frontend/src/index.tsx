@@ -7,6 +7,15 @@ import reportWebVitals from 'reportWebVitals';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const documentHeight = () => {
+  const doc = document.documentElement
+  doc.style.setProperty('--doc-height', `${window.innerHeight}px`)
+ }
+ window.addEventListener('resize', documentHeight)
+ documentHeight()
+
+
 root.render(
   <React.StrictMode>
     <App />

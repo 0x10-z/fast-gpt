@@ -32,7 +32,6 @@ export class User {
 
   static from_dict(user_dict: UserProps | null): User | null {
     if(user_dict){
-      console.log(user_dict);
       return new User(
         user_dict.id,
         user_dict.api_key,

@@ -76,13 +76,20 @@ class User(Base):
     def messages_to_gpt(
         self,
     ):
-        temp_messages = []
-        for message in self.messages:
-            temp_messages.append(
-                {"content": message.content, "role": str(message.role)}
-            )
+        max_chars = 12000  # max tokens permitted: 4096, 1 token ~ 4 chars
+        result = []
+        total_chars = 0
 
-        return temp_messages
+        for message in self.messages[::-1]:
+            if total_chars + len(message.content) > max_chars:
+                break
+            result.insert(0, {"content": message.content, "role": str(message.role)})
+            total_chars += len(message.content)
+            if total_chars >= max_chars:
+                break
+        
+        print("Taken last {} messages".format(len(result)))
+        return result
 
     def delete_last_message(self, db: Session):
         self.messages.pop()
