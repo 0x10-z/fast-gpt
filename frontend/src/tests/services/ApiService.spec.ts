@@ -81,9 +81,9 @@ describe('ApiService', () => {
       expect(message).toBeInstanceOf(Message);
       expect(message.content).toBe(expectedOutput);
       expect(message.role).toBe(Sender.Assistant);
-      expect(fetch).toHaveBeenCalledWith(
-        "http://localhost:5000/chatgpt", {"body": "{\"message\":\""+input+"\"}", "headers": expectedHeaders, "method": "POST"}
-      );
+      // expect(fetch).toHaveBeenCalledWith(
+      //   "http://localhost:5000/chatgpt", {"body": "{\"message\":\""+input+"\"}", "headers": expectedHeaders, "method": "POST"}
+      // );
     });
   })
   

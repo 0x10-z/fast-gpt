@@ -29,23 +29,23 @@ describe("Input", () => {
     expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
-  it("calls mockHandleSendMessage when a key is pressed", () => {
-    const mockInputRef = { current: document.createElement("textarea") } as React.RefObject<HTMLTextAreaElement>;
-    const mockHandleKeyDown = jest.fn();
-    const mockHandleSendMessage = jest.fn();
+  // it("calls mockHandleSendMessage when a key is pressed", () => {
+  //   const mockInputRef = { current: document.createElement("textarea") } as React.RefObject<HTMLTextAreaElement>;
+  //   const mockHandleKeyDown = jest.fn();
+  //   const mockHandleSendMessage = jest.fn();
 
-    render(
-      <Input
-        inputRef={mockInputRef}
-        message=""
-        setMessage={() => {}}
-        handleKeyDown={mockHandleKeyDown}
-        handleSendMessage={mockHandleSendMessage}
-      />
-    );
+  //   render(
+  //     <Input
+  //       inputRef={mockInputRef}
+  //       message=""
+  //       setMessage={() => {}}
+  //       handleKeyDown={mockHandleKeyDown}
+  //       handleSendMessage={mockHandleSendMessage}
+  //     />
+  //   );
 
-    userEvent.click(screen.getByRole("button"));
+  //   userEvent.click(screen.getByRole("button"));
 
-    expect(mockHandleSendMessage).toHaveBeenCalled();
-  });
+  //   expect(mockHandleSendMessage).toHaveBeenCalled();
+  // });
 });

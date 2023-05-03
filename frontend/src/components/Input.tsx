@@ -1,5 +1,4 @@
 import TextareaAutosize from "react-textarea-autosize";
-import { useRef } from "react";
 
 interface InputProps {
   inputRef: React.MutableRefObject<HTMLTextAreaElement | null>;
@@ -10,12 +9,9 @@ interface InputProps {
 }
 
 function Input({ inputRef, message, setMessage, handleKeyDown, handleSendMessage,}: InputProps) {
-  const formRef = useRef<HTMLDivElement>(null);
 
   return (
-      <div 
-        onSubmit={handleSendMessage} ref={formRef}
-        className="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 border border-black/10 bg-white rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] relative">
+      <div className="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 border border-black/10 bg-white rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] relative">
         <TextareaAutosize
           autoFocus
           ref={inputRef}
@@ -32,7 +28,7 @@ function Input({ inputRef, message, setMessage, handleKeyDown, handleSendMessage
         />
         <div className="absolute inset-y-0 right-0 flex items-center pr-2">
           <button type="button"
-            onClick={() => handleSendMessage}>
+            onClick={handleSendMessage}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 text-gray-500 hover:text-blue-500"
