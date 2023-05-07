@@ -9,5 +9,15 @@ services:
       - ./backend/.env
     volumes:
       - ./backend/app:/app
-    #command: "python -m debugpy --listen 0.0.0.0:5678 --wait-for-client /app/main.py --reload"
-    command: "python -m debugpy --listen 0.0.0.0:5678 -m pytest --debug"
+    command: "python -m debugpy --listen 0.0.0.0:5678 --wait-for-client /app/main.py --reload"
+    #command: "python -m debugpy --listen 0.0.0.0:5678 -m pytest --debug"
+
+  front-fast-gpt:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/.env
+    volumes:
+      - ./frontend:/app
