@@ -33,14 +33,11 @@ function Sidebar({ user, isOpen, toggleNavbar, handleLogout, handleResetSession 
     </div>
     <div className="flex flex-col flex-grow px-4 py-6 overflow-y-auto">
       <div className="flex flex-col space-y-1">
-        <button className="block p-2 transition duration-300 ease-in-out rounded-md hover:bg-gray-800">Creado: {user.created_at.toDateString()}</button>
-        <button className="block p-2 transition duration-300 ease-in-out rounded-md hover:bg-gray-800">Tokens disponibles: {user.tokens_available}</button>
+        <button onClick={handleLogout} className="w-full block p-2 transition duration-300 ease-in-out rounded-md bg-red-800 hover:bg-gray-500">Salir</button>
         <button onClick={handleResetSession} className="w-full block p-2 transition duration-300 ease-in-out rounded-md bg-yellow-800 hover:bg-gray-500">Reiniciar sesión</button>
-
       </div>
     </div>
     <div className="flex-shrink-0 px-4 py-3">
-      <button onClick={handleLogout} className="w-full block p-2 transition duration-300 ease-in-out rounded-md bg-red-800 hover:bg-gray-500">Salir</button>
       <SidebarFooter />
     </div>
   </div>
