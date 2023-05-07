@@ -62,7 +62,7 @@ function ChatWindow({ user }: ChatWindowProps ) {
   );
   
   return (
-    <div className="flex flex-col h-screen" onClick={handleClick}>
+    <div id="chat-container" className="flex flex-col h-screen" onClick={handleClick}>
       <div className="flex flex-col flex-grow overflow-y-auto">
         <MessagesList loading={loading} lastMessageRef={lastMessageRef} messages={messages} />
       </div>
